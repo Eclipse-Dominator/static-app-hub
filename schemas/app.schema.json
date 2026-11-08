@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/OWNER/static-app-hub/main/schemas/app.schema.json",
+  "title": "Static App Hub — application manifest",
+  "description": "One JSON file per application in apps/<id>.json. See docs/MANIFEST.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "tagline", "category", "links"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional editor hint pointing at this schema."
+    },
+    "id": {
+      "$ref": "#/definitions/slug",
+      "description": "Stable, unique slug. Must match the file name (apps/<id>.json) and must not change once published."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "tagline": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 140,
+      "description": "One short sentence shown on cards and in search results."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "Optional long description, rendered as Markdown on the app page."
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "developer-tools",
+        "productivity",
+        "media",
+        "security",
+        "networking",
+        "utilities",
+        "education",
+        "games",
+        "other"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 30
+      }
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Absolute https URL, or a path inside this repo's public/ directory (e.g. /icons/foo.svg). Monochrome SVGs work best. Falls back to a generated monogram."
+    },
+    "accent": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$",
+      "description": "Optional card accent colour."
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "license": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "SPDX identifier or a short label (e.g. MIT, Apache-2.0, Proprietary, Freeware)."
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "repo": { "type": "string", "format": "uri" },
+        "homepage": { "type": "string", "format": "uri" },
+        "docs": { "type": "string", "format": "uri" },
+        "changelog": { "type": "string", "format": "uri" },
+        "issues": { "type": "string", "format": "uri" },
+        "discussions": { "type": "string", "format": "uri" },
+        "donate": { "type": "string", "format": "uri" }
+      },
+      "anyOf": [
+        { "required": ["repo"] },
+        { "required": ["homepage"] }
+      ]
+    },
+    "platforms": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Optional display override. When omitted, platforms are derived from release assets.",
+      "items": { "$ref": "#/definitions/os" }
+    },
+    "install": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional package-manager or script install commands. Rendered with copy buttons.",
+      "properties": {
+        "brew": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "scoop": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "winget": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "choco": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "cargo": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "npm": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "pypi": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "pipx": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "go": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "docker": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "script": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "POSIX shell one-liner (Linux/macOS)."
+        },
+        "powershell": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "PowerShell one-liner (Windows)."
+        }
+      }
+    },
+    "releases": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 30,
+      "description": "Newest release first. Required for published manifests; submission templates may leave this empty.",
+      "items": { "$ref": "#/definitions/release" }
+    }
+  },
+  "definitions": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 50
+    },
+    "os": {
+      "type": "string",
+      "enum": ["windows", "macos", "linux", "android", "ios", "web", "any"]
+    },
+    "arch": {
+      "type": "string",
+      "enum": ["x64", "arm64", "x86", "universal", "any"]
+    },
+    "assetKind": {
+      "type": "string",
+      "enum": [
+        "installer",
+        "portable",
+        "archive",
+        "package",
+        "script",
+        "dmg",
+        "msi",
+        "deb",
+        "rpm",
+        "appimage",
+        "binary",
+        "other"
+      ]
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "date", "assets"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48,
+          "description": "Human version string, e.g. 1.4.0 or 2026.10.02."
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["stable", "beta", "nightly"],
+          "default": "stable"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 30000,
+          "description": "Release notes, rendered as Markdown."
+        },
+        "assets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 60,
+          "items": { "$ref": "#/definitions/asset" }
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url", "os", "kind"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "File name shown to users. Keep it unique inside a release."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Direct, publicly reachable download URL."
+        },
+        "os": { "$ref": "#/definitions/os" },
+        "arch": { "$ref": "#/definitions/arch", "default": "any" },
+        "kind": { "$ref": "#/definitions/assetKind" },
+        "label": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Optional friendly label, e.g. 'Portable (no install)'."
+        },
+        "recommended": {
+          "type": "boolean",
+          "default": false,
+          "description": "Preferred download for this OS on the app page."
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Size in bytes. Shown next to the download."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Lowercase hex SHA-256 checksum."
+        },
+        "sig": {
+          "type": "string",
+          "format": "uri",
+          "description": "Optional detached signature or checksum file URL."
+        }
+      }
+    }
+  }
+}

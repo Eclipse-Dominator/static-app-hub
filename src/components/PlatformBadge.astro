@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import { osLabel } from '../lib/registry';
+import type { Os } from '../lib/types';
+
+interface Props {
+  os: Os;
+  short?: boolean;
+}
+
+const { os, short = false } = Astro.props;
+const shortLabels: Record<Os, string> = {
+  windows: 'Windows',
+  macos: 'macOS',
+  linux: 'Linux',
+  android: 'Android',
+  ios: 'iOS',
+  web: 'Web',
+  any: 'Any',
+};
+---
+
+<span class="platform" title={osLabel(os)}>
+  <Icon name={`os:${os}`} size={12} />
+  {short ? shortLabels[os] : osLabel(os)}
+</span>

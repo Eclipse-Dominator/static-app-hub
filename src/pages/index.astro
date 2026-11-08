@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import AppCard from '../components/AppCard.astro';
+import Icon from '../components/Icon.astro';
+import {
+  apps,
+  categoryLabel,
+  totalAssets,
+  totalReleases,
+  withBase,
+} from '../lib/registry';
+import config from '../../hub.config.json';
+
+const categoryCounts = new Map<string, number>();
+for (const app of apps) {
+  categoryCounts.set(app.category, (categoryCounts.get(app.category) ?? 0) + 1);
+}
+const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const releaseCount = totalReleases();
+const assetCount = totalAssets();
+---
+
+<Base description={`Browse ${apps.length} downloadable apps — installers, portable builds, packages, and scripts for Windows, macOS, and Linux.`}>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <p class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Open registry · <strong>{apps.length} app{apps.length === 1 ? '' : 's'}</strong>
+        </p>
+        <h1 class="hero-title">
+          Download apps.<br />
+          <span class="gradient">Skip the store.</span>
+        </h1>
+        <p class="hero-lede">
+          {config.description} Each entry is a manifest in an open Git repository, published
+          straight from its maintainer's release pipeline.
+        </p>
+        <div class="hero-meta">
+          <span><strong>{releaseCount}</strong> releases indexed</span>
+          <span class="dot"></span>
+          <span><strong>{assetCount}</strong> downloadable files</span>
+          <span class="dot"></span>
+          <span>Reviewed via pull request</span>
+        </div>
+        <div class="search">
+          <Icon name="search" size={18} />
+          <label class="visually-hidden" for="app-search">Search apps</label>
+          <input
+            id="app-search"
+            type="search"
+            placeholder="Search apps, tags, or platforms…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-describedby="results-count"
+          />
+          <kbd>/</kbd>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" aria-label="Applications">
+    <div class="filters">
+      <span class="filters-label">Platform</span>
+      <div class="chips" role="group" aria-label="Filter by platform">
+        <button class="chip" type="button" data-platform="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-platform="windows" aria-pressed="false">Windows</button>
+        <button class="chip" type="button" data-platform="macos" aria-pressed="false">macOS</button>
+        <button class="chip" type="button" data-platform="linux" aria-pressed="false">Linux</button>
+      </div>
+
+      <div class="filters-spacer"></div>
+
+      <div class="select-wrap">
+        <label class="visually-hidden" for="category-select">Category</label>
+        <select class="select" id="category-select">
+          <option value="all">All categories</option>
+          {categories.map(([category, count]) => (
+            <option value={category}>{categoryLabel(category as never)} ({count})</option>
+          ))}
+        </select>
+        <Icon name="chevron-down" size={14} />
+      </div>
+
+      <div class="select-wrap">
+        <label class="visually-hidden" for="sort-select">Sort</label>
+        <select class="select" id="sort-select">
+          <option value="recommended">Recommended</option>
+          <option value="newest">Newest</option>
+          <option value="name">A–Z</option>
+        </select>
+        <Icon name="chevron-down" size={14} />
+      </div>
+    </div>
+
+    <div class="results-line">
+      <span id="results-count" aria-live="polite">
+        {apps.length} app{apps.length === 1 ? '' : 's'}
+      </span>
+      <span>Newest releases first</span>
+    </div>
+
+    <div class="app-grid" id="app-grid">
+      {apps.map((app, index) => <AppCard app={app} index={index} />)}
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <h2>No apps match those filters</h2>
+      <p>Try a broader search, or clear the platform and category filters.</p>
+      <button class="btn btn-small" type="button" id="clear-filters">Clear filters</button>
+    </div>
+
+    <div class="submit-cta">
+      <div class="callout">
+        <Icon name="zap" size={18} />
+        <div>
+          <strong>Maintain an app?</strong> Add a workflow step to your release pipeline and open a pull
+          request here automatically — public or private repository. <a href={withBase('/about/#submit')}>Read the submission guide →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/filters';
+  </script>
+</Base>

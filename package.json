@@ -1,0 +1,29 @@
+{
+  "name": "static-app-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A static, GitHub Pages hosted landing page for downloadable applications.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run validate && astro build",
+    "preview": "astro preview",
+    "validate": "node scripts/validate.mjs",
+    "check": "astro check",
+    "submit:local": "node scripts/submit-local.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "astro": "^5.15.0",
+    "marked": "^16.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^26.6.6",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.11"
+  }
+}

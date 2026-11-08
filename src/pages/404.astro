@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { withBase } from '../lib/registry';
+---
+
+<Base title="Page not found" description="The page you were looking for does not exist.">
+  <div class="container">
+    <div style="max-width:560px;padding:90px 0 120px">
+      <p class="eyebrow"><span class="eyebrow-dot"></span> 404</p>
+      <h1 class="page-title">That page isn't here.</h1>
+      <p class="page-lede">
+        The app may have been renamed or removed from the registry. Try browsing everything that is
+        currently listed.
+      </p>
+      <div class="download-actions">
+        <a class="btn btn-primary" href={withBase('/')}>
+          <Icon name="arrow-left" size={16} /> Browse apps
+        </a>
+        <a class="btn btn-ghost" href={withBase('/about/')}>How it works</a>
+      </div>
+    </div>
+  </div>
+</Base>

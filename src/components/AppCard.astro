@@ -1,0 +1,86 @@
+---
+import type { App } from '../lib/types';
+import {
+  appPlatforms,
+  appTags,
+  categoryLabel,
+  formatDate,
+  iconUrl,
+  latestRelease,
+  withBase,
+} from '../lib/registry';
+import Icon from './Icon.astro';
+import PlatformBadge from './PlatformBadge.astro';
+
+interface Props {
+  app: App;
+  index?: number;
+}
+
+const { app, index = 0 } = Astro.props;
+const release = latestRelease(app);
+const channel = release.channel ?? 'stable';
+const platforms = appPlatforms(app).slice(0, 4);
+const tags = appTags(app).slice(0, 3);
+const icon = iconUrl(app.icon);
+const href = withBase(`/apps/${app.id}/`);
+---
+
+<article
+  class="app-card"
+  style={`--card-accent:${app.accent ?? 'var(--accent)'};--i:${index}`}
+  data-app
+  data-name={`${app.name} ${app.tagline} ${app.id} ${tags.join(' ')}`.toLowerCase()}
+  data-category={app.category}
+  data-platforms={appPlatforms(app).join(' ')}
+  data-featured={app.featured ? 'true' : 'false'}
+  data-date={release.date}
+  data-name-sort={app.name.toLowerCase()}
+>
+  <a class="card-link" href={href}>
+    <div class="card-top">
+      {icon ? (
+        <span class="app-icon"><img src={icon} alt="" width="52" height="52" loading="lazy" /></span>
+      ) : (
+        <span class="app-icon app-icon--fallback" aria-hidden="true">{app.name.slice(0, 1).toUpperCase()}</span>
+      )}
+      <div class="card-heading">
+        <h2 class="app-name">
+          {app.name}
+          {app.featured && (
+            <span class="featured-mark" title="Featured">
+              <Icon name="star" size={10} />
+            </span>
+          )}
+        </h2>
+        <p class="app-category">{categoryLabel(app.category)}</p>
+      </div>
+    </div>
+
+    <p class="app-tagline">{app.tagline}</p>
+
+    {tags.length > 0 && (
+      <div class="card-tags">
+        {tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    )}
+
+    <div class="card-footer">
+      <div class="platforms">
+        {platforms.map((os) => <PlatformBadge os={os} short />)}
+      </div>
+      <div class="card-meta">
+        <span class="card-version">
+          v{release.version}
+          {channel !== 'stable' && <span class="badge-channel">{channel}</span>}
+        </span>
+        <span class="card-updated">{formatDate(release.date)}</span>
+      </div>
+    </div>
+
+    <span class="card-cta">
+      View downloads
+      <Icon name="arrow-right" size={13} />
+    </span>
+  </a>
+</article>

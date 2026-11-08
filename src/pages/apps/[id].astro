@@ -1,0 +1,467 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import PlatformBadge from '../../components/PlatformBadge.astro';
+import type { App, Os, Release } from '../../lib/types';
+import {
+  appPlatforms,
+  apps,
+  categoryLabel,
+  formatBytes,
+  formatDate,
+  groupAssetsByOs,
+  iconUrl,
+  installEntries,
+  kindLabel,
+  latestRelease,
+  latestStable,
+  linkEntries,
+  archLabel,
+  recommendedAsset,
+  renderMarkdown,
+  withBase,
+} from '../../lib/registry';
+
+export function getStaticPaths() {
+  return apps.map((app) => ({ params: { id: app.id }, props: { app } }));
+}
+
+interface Props {
+  app: App;
+}
+
+const { app } = Astro.props;
+
+const latest = latestRelease(app);
+const release: Release = latestStable(app);
+const channel = release.channel ?? 'stable';
+const hasNewerPrerelease = latest.version !== release.version;
+const groups = groupAssetsByOs(release.assets);
+const installs = installEntries(app);
+const links = linkEntries(app);
+const platforms = appPlatforms(app);
+const icon = iconUrl(app.icon);
+const descriptionHtml = renderMarkdown(app.description);
+const hasChecksums = release.assets.some((asset) => asset.sha256);
+const category = categoryLabel(app.category);
+
+const linkIcons: Record<string, string> = {
+  repo: 'github',
+  homepage: 'globe',
+  docs: 'book',
+  changelog: 'file',
+  issues: 'bug',
+  discussions: 'message',
+  donate: 'heart',
+};
+
+const downloadData = {
+  version: release.version,
+  assets: release.assets.map((asset) => ({
+    name: asset.name,
+    url: asset.url,
+    os: asset.os,
+    arch: asset.arch,
+    kind: asset.kind,
+    size: asset.size,
+    recommended: asset.recommended,
+  })),
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: app.name,
+  description: app.tagline,
+  applicationCategory: category,
+  operatingSystem: platforms.map((os) => (os === 'any' ? 'Any' : os)).join(', '),
+  softwareVersion: release.version,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  url: new URL(Astro.url.pathname, Astro.site ?? 'https://localhost').toString(),
+};
+---
+
+<Base title={app.name} description={app.tagline}>
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href={withBase('/')}>Browse</a>
+      <Icon name="arrow-right" size={12} />
+      <span aria-current="page">{app.name}</span>
+    </nav>
+
+    <header class="app-hero" style={`--card-accent:${app.accent ?? 'var(--accent)'}`}>
+      <div class="app-header">
+        {icon ? (
+          <span class="app-icon"><img src={icon} alt="" width="76" height="76" /></span>
+        ) : (
+          <span class="app-icon app-icon--fallback" aria-hidden="true">{app.name.slice(0, 1).toUpperCase()}</span>
+        )}
+
+        <div class="app-header-main">
+          <div class="app-title-row">
+            <h1 class="app-title">{app.name}</h1>
+            {channel !== 'stable' && <span class="badge-channel">{channel}</span>}
+            {app.license && <span class="tag">{app.license}</span>}
+          </div>
+          <p class="app-lede">{app.tagline}</p>
+
+          <div class="app-meta">
+            <span class="meta-item"><Icon name="tag" size={14} /> <strong>v{release.version}</strong></span>
+            <span class="meta-item"><Icon name="clock" size={14} /> {formatDate(release.date)}</span>
+            <span class="meta-item"><Icon name="layers" size={14} /> {category}</span>
+            <span class="meta-item">
+              <span class="platforms">
+                {platforms.map((os) => <PlatformBadge os={os} short />)}
+              </span>
+            </span>
+          </div>
+
+          <div class="download-actions">
+            <a class="btn btn-primary" id="primary-download" href="#downloads" target="_blank" rel="noopener noreferrer">
+              <Icon name="download" size={17} />
+              <span id="primary-download-label">Download</span>
+            </a>
+            <a class="btn btn-ghost" href="#downloads">
+              All downloads <span class="mono" style="font-size:11px;opacity:.6">v{release.version}</span>
+            </a>
+            {links.some((link) => link.key === 'repo') && (
+              <a
+                class="btn btn-ghost"
+                href={links.find((link) => link.key === 'repo')!.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="github" size={16} /> Source
+              </a>
+            )}
+          </div>
+          <p class="download-note" id="download-note">
+            Version {release.version} · {release.assets.length} file{release.assets.length === 1 ? '' : 's'}
+          </p>
+
+          {hasNewerPrerelease && (
+            <div class="callout" style="margin-top:16px">
+              <Icon name="info" size={18} />
+              <div>
+                Pre-release <strong>v{latest.version}</strong> is available. <a href="#releases">See release history →</a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <div class="detail-grid">
+      <div class="content">
+        {descriptionHtml && (
+          <section class="section" aria-labelledby="about-heading">
+            <div class="section-head">
+              <h2 class="section-title" id="about-heading">About {app.name}</h2>
+            </div>
+            <div class="prose" set:html={descriptionHtml} />
+          </section>
+        )}
+
+        <section class="section" id="downloads" aria-labelledby="downloads-heading">
+          <div class="section-head">
+            <h2 class="section-title" id="downloads-heading">Downloads</h2>
+            <span class="section-note">
+              {channel === 'stable' ? 'Latest stable release' : `${channel} release`} · v{release.version}
+            </span>
+          </div>
+
+          {groups.length > 1 && (
+            <div class="os-tabs" role="tablist" aria-label="Platform">
+              {groups.map((group, index) => (
+                <button
+                  class="os-tab"
+                  type="button"
+                  role="tab"
+                  data-os-tab={group.os}
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                  tabindex={index === 0 ? 0 : -1}
+                >
+                  {group.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {groups.map((group) => (
+            <div data-os-group={group.os}>
+              <div class="asset-list">
+                {group.assets.map((asset) => (
+                  <div class="asset">
+                    <span class="asset-icon"><Icon name={`kind:${asset.kind}`} size={15} /></span>
+                    <div class="asset-main">
+                      <div class="asset-name">
+                        {asset.name}
+                        {asset.recommended && <span class="recommended-pill">Recommended</span>}
+                      </div>
+                      <div class="asset-sub">
+                        <span>{asset.label ?? kindLabel(asset.kind)}</span>
+                        <span class="dot"></span>
+                        <span>{archLabel(asset.arch)}</span>
+                        {asset.size !== undefined && (
+                          <>
+                            <span class="dot"></span>
+                            <span>{formatBytes(asset.size)}</span>
+                          </>
+                        )}
+                        {asset.sha256 && (
+                          <>
+                            <span class="dot"></span>
+                            <code title={asset.sha256}>sha256:{asset.sha256.slice(0, 10)}…</code>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div class="asset-actions">
+                      {asset.sha256 && (
+                        <button
+                          class="copy-btn"
+                          type="button"
+                          data-copy={asset.sha256}
+                          aria-label={`Copy SHA-256 checksum for ${asset.name}`}
+                          title="Copy SHA-256 checksum"
+                        >
+                          <Icon name="copy" size={13} />
+                        </button>
+                      )}
+                      {asset.sig && (
+                        <a
+                          class="asset-download"
+                          href={asset.sig}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Detached signature or checksum file"
+                        >
+                          Signature
+                        </a>
+                      )}
+                      <a
+                        class="asset-download"
+                        href={asset.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Download <Icon name="download" size={13} />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {hasChecksums && (
+            <p class="checksums-note">
+              Every file has a SHA-256 checksum — use the copy button to verify your download. Files are
+              hosted by the app maintainer; this hub only links to them.
+            </p>
+          )}
+        </section>
+
+        {installs.length > 0 && (
+          <section class="section" aria-labelledby="install-heading">
+            <div class="section-head">
+              <h2 class="section-title" id="install-heading">Install with a package manager</h2>
+              <span class="section-note">or a one-line script</span>
+            </div>
+            <div class="install-grid">
+              {installs.map((entry) => (
+                <div class="install-card">
+                  <div class="install-head">
+                    <span>{entry.label}</span>
+                    <button
+                      class="copy-btn"
+                      type="button"
+                      data-copy={entry.command}
+                      aria-label={`Copy ${entry.label} install command`}
+                      title="Copy command"
+                    >
+                      <Icon name="copy" size={13} />
+                    </button>
+                  </div>
+                  <div class="install-command">
+                    <code>{entry.command}</code>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section class="section" id="releases" aria-labelledby="releases-heading">
+          <div class="section-head">
+            <h2 class="section-title" id="releases-heading">Release history</h2>
+            <span class="section-note">{app.releases.length} release{app.releases.length === 1 ? '' : 's'}</span>
+          </div>
+
+          {app.releases.map((item, index) => {
+            const itemChannel = item.channel ?? 'stable';
+            const itemNotes = renderMarkdown(item.notes);
+            const itemGroups = groupAssetsByOs(item.assets);
+            return (
+              <article class="release">
+                <div class="release-head">
+                  <span class="release-version">v{item.version}</span>
+                  <span class="release-date">{formatDate(item.date)}</span>
+                  {itemChannel !== 'stable' && <span class="badge-channel">{itemChannel}</span>}
+                  {item.title && <span class="release-title">{item.title}</span>}
+                </div>
+
+                {itemNotes &&
+                  (index === 0 ? (
+                    <div class="release-notes" set:html={itemNotes} />
+                  ) : (
+                    <details>
+                      <summary>
+                        <span class="release-asset-count">
+                          {item.assets.length} file{item.assets.length === 1 ? '' : 's'}
+                        </span>
+                      </summary>
+                      <div class="release-notes" set:html={itemNotes} />
+                    </details>
+                  ))}
+
+                {index > 0 && (
+                  <div class="release-downloads">
+                    {itemGroups.map((group) => {
+                      const asset = recommendedAsset(item, group.os as Os);
+                      if (!asset) return null;
+                      return (
+                        <a
+                          class="release-download"
+                          href={asset.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={asset.name}
+                        >
+                          <Icon name={`os:${group.os}`} size={12} />
+                          {group.label}
+                          <Icon name="download" size={11} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </section>
+      </div>
+
+      <aside class="sidebar" aria-label="App details">
+        <div class="panel">
+          <h2 class="panel-title">At a glance</h2>
+          <dl class="info-list">
+            <div class="info-row">
+              <dt>Latest</dt>
+              <dd class="mono">v{release.version}</dd>
+            </div>
+            <div class="info-row">
+              <dt>Released</dt>
+              <dd>{formatDate(release.date)}</dd>
+            </div>
+            <div class="info-row">
+              <dt>Channel</dt>
+              <dd>{channel.charAt(0).toUpperCase() + channel.slice(1)}</dd>
+            </div>
+            {app.license && (
+              <div class="info-row">
+                <dt>License</dt>
+                <dd>{app.license}</dd>
+              </div>
+            )}
+            <div class="info-row">
+              <dt>Category</dt>
+              <dd>{category}</dd>
+            </div>
+            <div class="info-row">
+              <dt>Platforms</dt>
+              <dd><span class="platforms">{platforms.map((os) => <PlatformBadge os={os} short />)}</span></dd>
+            </div>
+            {app.author && (
+              <div class="info-row">
+                <dt>Author</dt>
+                <dd>
+                  {app.author.url ? (
+                    <a href={app.author.url} target="_blank" rel="noopener noreferrer">{app.author.name}</a>
+                  ) : (
+                    app.author.name
+                  )}
+                </dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
+        {links.length > 0 && (
+          <div class="panel">
+            <h2 class="panel-title">Links</h2>
+            <div class="link-list">
+              {links.map((link) => (
+                <a class="link-item" href={link.url} target="_blank" rel="noopener noreferrer">
+                  <Icon name={linkIcons[link.key] ?? 'link'} size={15} />
+                  {link.label}
+                  <Icon name="arrow-up-right" size={12} class="arrow" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {hasChecksums && (
+          <div class="panel">
+            <h2 class="panel-title">Verify your download</h2>
+            <div class="verify">
+              <p>Compare the file's hash with the value shown next to it.</p>
+              <div class="code-block">sha256sum &lt;file&gt;       # Linux
+shasum -a 256 &lt;file&gt;  # macOS
+Get-FileHash &lt;file&gt;    # Windows</div>
+            </div>
+          </div>
+        )}
+      </aside>
+    </div>
+  </div>
+
+  <script type="application/json" id="download-data" is:inline set:html={JSON.stringify(downloadData)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)}></script>
+  <script>
+    import '../../scripts/app-page';
+  </script>
+</Base>
+
+<style>
+  .download-note {
+    margin-top: 10px;
+  }
+  .release-downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .release-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11.5px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .release-download:hover {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+  @media (max-width: 760px) {
+    .download-note {
+      width: 100%;
+    }
+  }
+</style>

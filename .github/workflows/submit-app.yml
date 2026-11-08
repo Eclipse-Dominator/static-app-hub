@@ -1,0 +1,214 @@
+name: Submit app to Static App Hub
+
+# Reusable workflow — call it from your application's release pipeline:
+#
+#   jobs:
+#     publish:
+#       uses: owner/static-app-hub/.github/workflows/submit-app.yml@main
+#       with:
+#         app-id: my-app
+#         manifest: .github/app-hub.json
+#         release-tag: ${{ github.event.release.tag_name }}
+#         mirror-assets: false
+#       secrets:
+#         HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
+#
+# See docs/SUBMITTING.md for the manifest template and token setup.
+
+on:
+  workflow_call:
+    inputs:
+      app-id:
+        description: Stable lowercase slug for the app (must match apps/<id>.json).
+        required: true
+        type: string
+      manifest:
+        description: Path in the calling repository to the manifest template.
+        required: true
+        type: string
+      release-tag:
+        description: Release tag to publish. Defaults to the tag of the triggering release event.
+        required: false
+        type: string
+        default: ''
+      version:
+        description: Override the version string (defaults to the tag without a leading "v").
+        required: false
+        type: string
+        default: ''
+      channel:
+        description: Release channel — stable, beta, or nightly.
+        required: false
+        type: string
+        default: stable
+      notes:
+        description: Override the release notes (Markdown). Defaults to the GitHub release body.
+        required: false
+        type: string
+        default: ''
+      mirror-assets:
+        description: Copy release assets into this hub's public Releases (required for private repositories).
+        required: false
+        type: boolean
+        default: false
+      checksums:
+        description: Download assets to compute size and SHA-256. Disable for very large releases.
+        required: false
+        type: boolean
+        default: true
+      dry-run:
+        description: Build and validate the manifest without pushing a branch or opening a PR.
+        required: false
+        type: boolean
+        default: false
+      hub-repo:
+        description: owner/repo of the Static App Hub (for example, your-name/static-app-hub).
+        required: true
+        type: string
+      base-branch:
+        description: Branch in the hub that pull requests should target.
+        required: false
+        type: string
+        default: main
+    secrets:
+      HUB_TOKEN:
+        description: Fine-grained PAT with Contents and Pull requests read/write access to the hub repository.
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out the calling repository
+        uses: actions/checkout@v4
+        with:
+          path: caller
+
+      - name: Resolve hub repository
+        id: hub
+        env:
+          HUB_REPO_INPUT: ${{ inputs.hub-repo }}
+        run: |
+          set -euo pipefail
+          repo="${HUB_REPO_INPUT}"
+          if [ -z "$repo" ]; then
+            echo "::error::hub-repo is required"
+            exit 1
+          fi
+          echo "repo=$repo" >> "$GITHUB_OUTPUT"
+          echo "Hub: $repo"
+
+      - name: Check out the hub
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.hub-repo }}
+          path: hub
+          token: ${{ secrets.HUB_TOKEN }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: hub/.nvmrc
+          cache: npm
+          cache-dependency-path: hub/package-lock.json
+
+      - name: Install hub dependencies
+        working-directory: hub
+        run: npm ci
+
+      - name: Build the submission
+        id: build
+        working-directory: hub
+        env:
+          APP_ID: ${{ inputs.app-id }}
+          MANIFEST_PATH: ${{ github.workspace }}/caller/${{ inputs.manifest }}
+          HUB_APPS_DIR: ${{ github.workspace }}/hub/apps
+          SCHEMA_PATH: ${{ github.workspace }}/hub/schemas/app.schema.json
+          RELEASE_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ inputs.release-tag || github.event.release.tag_name }}
+          VERSION: ${{ inputs.version }}
+          CHANNEL: ${{ inputs.channel }}
+          NOTES: ${{ inputs.notes }}
+          MIRROR: ${{ inputs.mirror-assets }}
+          CHECKSUMS: ${{ inputs.checksums }}
+          DRY_RUN: ${{ inputs.dry-run }}
+          HUB_REPO: ${{ steps.hub.outputs.repo }}
+          SOURCE_TOKEN: ${{ github.token }}
+          HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
+        run: node scripts/build-submission.mjs
+
+      - name: Validate the registry
+        working-directory: hub
+        run: node scripts/validate.mjs
+
+      - name: Show the resulting change
+        working-directory: hub
+        run: git diff --stat -- apps && git diff -- apps
+
+      - name: Open a pull request
+        if: ${{ !inputs.dry-run }}
+        working-directory: hub
+        env:
+          GH_TOKEN: ${{ secrets.HUB_TOKEN }}
+          HUB_REPO: ${{ inputs.hub-repo }}
+          BASE_BRANCH: ${{ inputs.base-branch }}
+          APP_ID: ${{ steps.build.outputs.app_id }}
+          VERSION: ${{ steps.build.outputs.version }}
+          RELEASE_TAG: ${{ inputs.release-tag || github.event.release.tag_name }}
+          MIRRORED: ${{ steps.build.outputs.mirrored }}
+          RELEASE_URL: ${{ steps.build.outputs.release_url }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "app-hub[bot]"
+          git config user.email "app-hub[bot]@users.noreply.github.com"
+
+          safe_version="$(printf '%s' "${VERSION}" | tr -c 'A-Za-z0-9._-' '-')"
+          branch="submit/${APP_ID}-${safe_version:-update}-${GITHUB_RUN_ID}"
+          if [ -n "${VERSION}" ]; then
+            title="Submit ${APP_ID} v${VERSION}"
+          else
+            title="Update ${APP_ID} metadata"
+          fi
+
+          git add apps
+          if git diff --cached --quiet; then
+            echo "::notice::No manifest changes to submit."
+            exit 0
+          fi
+
+          git checkout -b "$branch"
+          git commit -m "$title"
+          git push origin "HEAD:refs/heads/${branch}"
+
+          {
+            printf 'Automated submission from **%s** (`%s`).\n\n' "${GITHUB_REPOSITORY}" "${GITHUB_SHA}"
+            printf -- '- App: `%s`\n' "${APP_ID}"
+            if [ -n "${VERSION}" ]; then printf -- '- Version: `%s`\n' "${VERSION}"; fi
+            if [ -n "${RELEASE_TAG}" ]; then
+              printf -- '- Source release: https://github.com/%s/releases/tag/%s\n' "${GITHUB_REPOSITORY}" "${RELEASE_TAG}"
+            fi
+            if [ "${MIRRORED}" = "true" ]; then
+              printf -- '- Assets were mirrored to the hub Releases (%s), so private files are publicly downloadable.\n' "${RELEASE_URL}"
+            fi
+            printf '\nThis PR only changes `apps/%s.json`.\n\n' "${APP_ID}"
+            printf '%s\n' \
+              'Review checklist:' \
+              '- [ ] App metadata is accurate (name, tagline, links, license).' \
+              '- [ ] Download URLs are public and point at the release above.' \
+              '- [ ] Checksums and file sizes look right.' \
+              '- [ ] No unexpected files or external scripts.' \
+              '' \
+              '_Opened automatically by the Static App Hub submission workflow._'
+          } > "${RUNNER_TEMP}/pr-body.md"
+
+          gh pr create \
+            --repo "${HUB_REPO}" \
+            --base "${BASE_BRANCH}" \
+            --head "${branch}" \
+            --title "${title}" \
+            --body-file "${RUNNER_TEMP}/pr-body.md"

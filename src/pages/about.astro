@@ -1,0 +1,294 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import config from '../../hub.config.json';
+import { withBase } from '../lib/registry';
+
+const repoUrl = `https://github.com/${config.owner}/${config.repo}`;
+const schemaUrl = `${repoUrl}/blob/main/schemas/app.schema.json`;
+
+const templateSnippet = `{
+  "$schema": "https://raw.githubusercontent.com/OWNER/static-app-hub/main/schemas/app.schema.json",
+  "id": "my-app",
+  "name": "My App",
+  "tagline": "One sentence about what it does.",
+  "category": "developer-tools",
+  "license": "MIT",
+  "links": { "repo": "https://github.com/you/my-app" },
+  "install": { "brew": "brew install you/tap/my-app" },
+  "releases": []
+}`;
+
+const workflowSnippet = `name: Publish to Static App Hub
+on:
+  release:
+    types: [published]
+jobs:
+  submit:
+    uses: YOUR-NAME/static-app-hub/.github/workflows/submit-app.yml@main
+    with:
+      hub-repo: YOUR-NAME/static-app-hub
+      app-id: my-app
+      manifest: .github/app-hub.json
+      release-tag: \${{ github.event.release.tag_name }}
+      mirror-assets: false
+    secrets:
+      HUB_TOKEN: \${{ secrets.HUB_TOKEN }}`;
+
+const manualSnippet = `# 1. start from an example, then edit it
+cp apps/termboard.json apps/my-app.json
+
+# 2. validate (schema + semantic checks)
+npm run validate
+
+# 3. preview the site
+npm run dev
+
+# 4. open a pull request
+git checkout -b add-my-app
+git add apps/my-app.json
+git commit -m "Add My App"
+git push -u origin add-my-app`;
+---
+
+<Base
+  title="How it works"
+  description="Publish a downloadable app to Static App Hub from any release pipeline — installers, portable builds, packages, or scripts."
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="eyebrow"><span class="eyebrow-dot"></span> For maintainers</p>
+      <h1 class="page-title">Ship your app to a page<br />people can actually find.</h1>
+      <p class="page-lede">
+        Static App Hub is a directory of downloadable software, stored as JSON in a Git repository
+        and served by GitHub Pages. No accounts, no database, no runtime server.
+      </p>
+    </header>
+
+    <div class="about-grid">
+      <div class="content">
+        <section class="section" id="how">
+          <h2 class="section-title">How the hub works</h2>
+          <div class="prose" style="margin-top:14px">
+            <p>
+              Every app is a single file in <a href={`${repoUrl}/tree/main/apps`} target="_blank" rel="noopener noreferrer"><code>apps/&lt;id&gt;.json</code></a>.
+              That file lists the app's metadata, install commands, and releases, including a direct
+              download URL for each installer, archive, package, or script. On every merge to
+              <code>main</code>, the site is rebuilt and deployed to GitHub Pages.
+            </p>
+            <p>
+              Reviewing happens in pull requests, so every download link is visible and versioned.
+              Nothing is uploaded to this site at runtime.
+            </p>
+          </div>
+
+          <div class="steps" style="margin-top:22px">
+            <div class="step">
+              <span class="step-num">01</span>
+              <div>
+                <h3>Cut a release in your repo</h3>
+                <p>Attach installers, archives, packages, or scripts to a GitHub Release as usual.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-num">02</span>
+              <div>
+                <h3>Run the submission workflow</h3>
+                <p>
+                  Your pipeline generates a manifest from the release — with checksums and
+                  platform detection — and opens a pull request here.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-num">03</span>
+              <div>
+                <h3>Get reviewed and deployed</h3>
+                <p>
+                  Once the manifest PR is merged, CI rebuilds the site. Your app page is live within a
+                  minute.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="submit">
+          <div class="section-head">
+            <h2 class="section-title">Automated submission</h2>
+            <span class="section-note">Recommended</span>
+          </div>
+          <p class="muted" style="font-size:14px">
+            The hub exposes a reusable workflow. Call it from your release pipeline and it will build
+            the manifest, validate it, and open the PR for you.
+          </p>
+
+          <div class="steps" style="margin-top:20px">
+            <div class="step">
+              <span class="step-num">1</span>
+              <div>
+                <h3>Create a fine-grained token</h3>
+                <p>
+                  Create a GitHub fine-grained personal access token scoped to
+                  <strong>{config.owner}/{config.repo}</strong> with
+                  <strong>Contents: Read and write</strong> and
+                  <strong>Pull requests: Read and write</strong>. Add it to your app repository as the
+                  secret <code>HUB_TOKEN</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <span class="step-num">2</span>
+              <div>
+                <h3>Add a manifest template</h3>
+                <p>
+                  Commit the parts that don't change between releases. The workflow fills in the
+                  release and assets. See the
+                  <a href={schemaUrl} target="_blank" rel="noopener noreferrer">JSON Schema</a> for every
+                  field.
+                </p>
+                <div class="code-snippet">
+                  <code>{templateSnippet}</code>
+                  <button class="copy-btn" type="button" data-copy={templateSnippet} aria-label="Copy manifest template">
+                    <Icon name="copy" size={13} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="step">
+              <span class="step-num">3</span>
+              <div>
+                <h3>Add the workflow</h3>
+                <p>
+                  Set <code>mirror-assets: true</code> if your repository is private. The hub will copy
+                  release assets into its own public Releases so downloads work.
+                </p>
+                <div class="code-snippet">
+                  <code>{workflowSnippet}</code>
+                  <button class="copy-btn" type="button" data-copy={workflowSnippet} aria-label="Copy workflow">
+                    <Icon name="copy" size={13} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="step">
+              <span class="step-num">4</span>
+              <div>
+                <h3>Publish a release</h3>
+                <p>
+                  Publish a GitHub Release. The workflow opens a PR here with the generated manifest,
+                  asset sizes, and SHA-256 checksums.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:18px">
+            <Icon name="info" size={18} />
+            <div>
+              By default the workflow downloads every asset to compute checksums. For very large
+              releases, pass <code>checksums: false</code>, or keep them and be patient.
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="manual">
+          <div class="section-head">
+            <h2 class="section-title">Manual pull request</h2>
+            <span class="section-note">No workflow required</span>
+          </div>
+          <p class="muted" style="font-size:14px">
+            Prefer to do it by hand? Copy an existing manifest, edit it, and open a normal PR. CI
+            validates every file against the schema.
+          </p>
+          <div class="code-snippet">
+            <code>{manualSnippet}</code>
+            <button class="copy-btn" type="button" data-copy={manualSnippet} aria-label="Copy manual submission steps">
+              <Icon name="copy" size={13} />
+            </button>
+          </div>
+          <p class="muted" style="font-size:13px;margin-top:12px">
+            To merge a new manifest into an existing app entry, use
+            <code>npm run submit:local -- path/to/manifest.json</code>.
+          </p>
+        </section>
+
+        <section class="section" id="private">
+          <h2 class="section-title">Private repositories</h2>
+          <div class="prose" style="margin-top:14px">
+            <p>
+              GitHub Pages can only serve public files, so private releases cannot be linked
+              directly. With <code>mirror-assets: true</code>, the submission workflow downloads the
+              release assets and uploads them to this repository's public Releases under a tag like
+              <code>app-my-app-v1.2.0</code>. Only the assets are copied — your source code stays
+              private.
+            </p>
+            <p>
+              Mirrored releases keep their original file names, sizes, and checksums, so links stay
+              stable and editable.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" id="faq">
+          <h2 class="section-title">Good to know</h2>
+          <div class="prose" style="margin-top:14px">
+            <p><strong>Can I update metadata without a release?</strong> Yes. Call the workflow without <code>release-tag</code>, or edit <code>apps/&lt;id&gt;.json</code> directly.</p>
+            <p><strong>Does the hub host files?</strong> Only when mirroring a private release. Otherwise it links to your release assets.</p>
+            <p><strong>Beta and nightly builds?</strong> Publish them with <code>channel: beta</code> or <code>channel: nightly</code>. Stable builds remain the default download.</p>
+            <p><strong>How do I remove an app?</strong> Open a PR that deletes <code>apps/&lt;id&gt;.json</code>. Existing mirrored releases stay in the hub's Releases until you delete them.</p>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar" aria-label="Submission details">
+        <div class="panel">
+          <h2 class="panel-title">Before you submit</h2>
+          <div class="prose" style="font-size:13px">
+            <ul>
+              <li>Stable <code>id</code> slug; it becomes the URL.</li>
+              <li>Public download URLs (or mirroring enabled).</li>
+              <li>A license and a source/homepage link.</li>
+              <li>Checksums for every file, if possible.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Manifest pieces</h2>
+          <dl class="info-list">
+            <div class="info-row"><dt>releases</dt><dd>Newest first</dd></div>
+            <div class="info-row"><dt>assets</dt><dd>OS + arch + kind</dd></div>
+            <div class="info-row"><dt>install</dt><dd>Optional commands</dd></div>
+            <div class="info-row"><dt>links</dt><dd>Repo / homepage</dd></div>
+            <div class="info-row"><dt>license</dt><dd>SPDX or label</dd></div>
+          </dl>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Resources</h2>
+          <div class="link-list">
+            <a class="link-item" href={schemaUrl} target="_blank" rel="noopener noreferrer">
+              <Icon name="file" size={15} /> JSON Schema
+              <Icon name="arrow-up-right" size={12} class="arrow" />
+            </a>
+            <a class="link-item" href={`${repoUrl}/blob/main/docs/SUBMITTING.md`} target="_blank" rel="noopener noreferrer">
+              <Icon name="book" size={15} /> Submission guide
+              <Icon name="arrow-up-right" size={12} class="arrow" />
+            </a>
+            <a class="link-item" href={`${repoUrl}/issues`} target="_blank" rel="noopener noreferrer">
+              <Icon name="bug" size={15} /> Ask a question
+              <Icon name="arrow-up-right" size={12} class="arrow" />
+            </a>
+            <a class="link-item" href={withBase('/apps.json')}>
+              <Icon name="layers" size={15} /> Registry JSON
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>

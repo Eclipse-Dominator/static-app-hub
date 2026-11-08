@@ -1,0 +1,9 @@
+{
+  "title": "Static App Hub",
+  "shortTitle": "App Hub",
+  "description": "A hand-reviewed directory of downloadable apps — installers, portable builds, packages, and scripts for every platform.",
+  "tagline": "Download apps. Skip the store.",
+  "owner": "your-github-name",
+  "repo": "static-app-hub",
+  "url": "https://your-github-name.github.io/static-app-hub"
+}
