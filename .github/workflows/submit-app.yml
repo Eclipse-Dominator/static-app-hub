@@ -1,4 +1,4 @@
-name: Submit app to Static App Hub
+name: Submit app to App Library
 
 # Reusable workflow — call it from your application's release pipeline:
 #
@@ -47,7 +47,7 @@ on:
         type: string
         default: ''
       mirror-assets:
-        description: Copy release assets into this hub's public Releases (required for private repositories).
+        description: Copy release assets into the library's public Releases (required for private repositories).
         required: false
         type: boolean
         default: false
@@ -62,17 +62,17 @@ on:
         type: boolean
         default: false
       hub-repo:
-        description: owner/repo of the Static App Hub (for example, your-name/static-app-hub).
+        description: owner/repo of the App Library (for example, your-name/static-app-hub).
         required: true
         type: string
       base-branch:
-        description: Branch in the hub that pull requests should target.
+        description: Branch in the library repository that pull requests should target.
         required: false
         type: string
         default: main
     secrets:
       HUB_TOKEN:
-        description: Fine-grained PAT with Contents and Pull requests read/write access to the hub repository.
+        description: Fine-grained PAT with Contents and Pull requests read/write access to the library repository.
         required: true
 
 permissions:
@@ -203,7 +203,7 @@ jobs:
               '- [ ] Checksums and file sizes look right.' \
               '- [ ] No unexpected files or external scripts.' \
               '' \
-              '_Opened automatically by the Static App Hub submission workflow._'
+              '_Opened automatically by the App Library submission workflow._'
           } > "${RUNNER_TEMP}/pr-body.md"
 
           gh pr create \

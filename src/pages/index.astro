@@ -3,13 +3,14 @@ import Base from '../layouts/Base.astro';
 import AppCard from '../components/AppCard.astro';
 import Icon from '../components/Icon.astro';
 import {
+  appPlatforms,
   apps,
   categoryLabel,
+  osLabel,
   totalAssets,
   totalReleases,
   withBase,
 } from '../lib/registry';
-import config from '../../hub.config.json';
 
 const categoryCounts = new Map<string, number>();
 for (const app of apps) {
@@ -18,6 +19,23 @@ for (const app of apps) {
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 const releaseCount = totalReleases();
 const assetCount = totalAssets();
+
+const platformOrder = ['windows', 'macos', 'linux', 'android', 'ios', 'web'] as const;
+const presentPlatforms = new Set<string>();
+for (const app of apps) {
+  for (const platform of appPlatforms(app)) {
+    if (platform !== 'any') presentPlatforms.add(platform);
+  }
+}
+const heroPlatforms = platformOrder
+  .filter((platform) => presentPlatforms.has(platform))
+  .map((platform) => osLabel(platform));
+const platformSummary =
+  heroPlatforms.length === 0
+    ? 'Cross-platform'
+    : heroPlatforms.length === 1
+      ? heroPlatforms[0]
+      : `${heroPlatforms.slice(0, -1).join(', ')} & ${heroPlatforms[heroPlatforms.length - 1]}`;
 ---
 
 <Base description={`Browse ${apps.length} downloadable apps — installers, portable builds, packages, and scripts for Windows, macOS, and Linux.`}>
@@ -26,22 +44,22 @@ const assetCount = totalAssets();
       <div class="hero-inner">
         <p class="eyebrow">
           <span class="eyebrow-dot"></span>
-          Open registry · <strong>{apps.length} app{apps.length === 1 ? '' : 's'}</strong>
+          Personal library · <strong>{apps.length} app{apps.length === 1 ? '' : 's'}</strong>
         </p>
         <h1 class="hero-title">
-          Download apps.<br />
-          <span class="gradient">Skip the store.</span>
+          The apps I build.<br />
+          <span class="gradient">All in one place.</span>
         </h1>
         <p class="hero-lede">
-          {config.description} Each entry is a manifest in an open Git repository, published
-          straight from its maintainer's release pipeline.
+          A small collection of tools, utilities, and experiments — with direct downloads for
+          Windows, macOS, and Linux. Private and in-progress projects included.
         </p>
         <div class="hero-meta">
-          <span><strong>{releaseCount}</strong> releases indexed</span>
+          <span><strong>{releaseCount}</strong> releases</span>
           <span class="dot"></span>
           <span><strong>{assetCount}</strong> downloadable files</span>
           <span class="dot"></span>
-          <span>Reviewed via pull request</span>
+          <span>{platformSummary}</span>
         </div>
         <div class="search">
           <Icon name="search" size={18} />
@@ -49,7 +67,7 @@ const assetCount = totalAssets();
           <input
             id="app-search"
             type="search"
-            placeholder="Search apps, tags, or platforms…"
+            placeholder="Search apps and tools…"
             autocomplete="off"
             spellcheck="false"
             aria-describedby="results-count"
@@ -115,8 +133,8 @@ const assetCount = totalAssets();
       <div class="callout">
         <Icon name="zap" size={18} />
         <div>
-          <strong>Maintain an app?</strong> Add a workflow step to your release pipeline and open a pull
-          request here automatically — public or private repository. <a href={withBase('/about/#submit')}>Read the submission guide →</a>
+          <strong>Published a new build?</strong> Add one step to the project's release workflow and it
+          opens a manifest pull request here automatically — public or private. <a href={withBase('/about/#submit')}>Publishing guide →</a>
         </div>
       </div>
     </div>

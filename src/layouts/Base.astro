@@ -63,7 +63,7 @@ const appCount = apps.length;
         </a>
 
         <nav class="nav" aria-label="Main">
-          <a class="nav-link" href={withBase('/')} aria-current={isHome ? 'page' : undefined}>Browse</a>
+          <a class="nav-link" href={withBase('/')} aria-current={isHome ? 'page' : undefined}>Apps</a>
           <a class="nav-link optional" href={withBase('/about/')} aria-current={isAbout ? 'page' : undefined}>How it works</a>
           <a class="nav-link optional" href={repoUrl} target="_blank" rel="noopener noreferrer">
             GitHub
@@ -92,10 +92,10 @@ const appCount = apps.length;
           <img src={withBase('/favicon.svg')} alt="" width="20" height="20" />
           {config.title}
         </a>
-        <span class="mono">{appCount} app{appCount === 1 ? '' : 's'} · open registry</span>
+        <span class="mono">{appCount} app{appCount === 1 ? '' : 's'} · personal library</span>
         <nav class="footer-links" aria-label="Footer">
-          <a href={withBase('/')}>Browse</a>
-          <a href={withBase('/about/')}>Submit an app</a>
+          <a href={withBase('/')}>All apps</a>
+          <a href={withBase('/about/')}>Publishing guide</a>
           <a href={withBase('/apps.json')}>Registry JSON</a>
           <a href={`${repoUrl}/blob/main/schemas/app.schema.json`} target="_blank" rel="noopener noreferrer">Schema</a>
         </nav>

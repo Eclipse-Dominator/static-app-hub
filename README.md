@@ -1,11 +1,12 @@
-# Static App Hub
+# App Library
 
-A static landing page for downloadable applications — installers, portable builds, packages,
-scripts, and archives — published from many different repositories.
+A personal app library and landing page for downloadable applications — installers, portable
+builds, packages, scripts, and archives. It is built for a collection of first-party or private
+projects that each publish their own releases.
 
 The site is generated with [Astro](https://astro.build) and deployed to GitHub Pages. It has no
-database and no runtime server: every app is a reviewed JSON manifest in [`apps/`](apps/), and other
-repositories submit new releases through a reusable GitHub Actions workflow.
+database and no runtime server: every app is a reviewed JSON manifest in [`apps/`](apps/), and
+other repositories submit new releases through a reusable GitHub Actions workflow.
 
 - **Site:** `https://<owner>.github.io/static-app-hub/` (set by GitHub Pages)
 - **Schema:** [`schemas/app.schema.json`](schemas/app.schema.json)
@@ -76,10 +77,10 @@ Edit `hub.config.json` before deploying:
 
 ```json
 {
-  "title": "Static App Hub",
-  "shortTitle": "App Hub",
-  "description": "…",
-  "tagline": "Download apps. Skip the store.",
+  "title": "App Library",
+  "shortTitle": "App Library",
+  "description": "A personal collection of apps and tools, with direct downloads for Windows, macOS, and Linux.",
+  "tagline": "The apps I build, in one place.",
   "owner": "your-github-name",
   "repo": "static-app-hub",
   "url": "https://your-github-name.github.io/static-app-hub"

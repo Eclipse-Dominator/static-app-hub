@@ -161,7 +161,7 @@ async function mirrorRelease({
       body: JSON.stringify({
         tag_name: tag,
         name: `${appName} v${version}`,
-        body: `${notes || ''}\n\n---\nMirrored from \`${sourceRepo}\` release \`${sourceTag}\` by Static App Hub.`,
+        body: `${notes || ''}\n\n---\nMirrored from \`${sourceRepo}\` release \`${sourceTag}\` by App Library.`,
         draft: false,
         prerelease: channel !== 'stable',
       }),
@@ -173,7 +173,7 @@ async function mirrorRelease({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: `${appName} v${version}`,
-        body: `${notes || ''}\n\n---\nMirrored from \`${sourceRepo}\` release \`${sourceTag}\` by Static App Hub.`,
+        body: `${notes || ''}\n\n---\nMirrored from \`${sourceRepo}\` release \`${sourceTag}\` by App Library.`,
         prerelease: channel !== 'stable',
       }),
     });
@@ -277,7 +277,7 @@ async function main() {
     const repoInfo = await api(`/repos/${RELEASE_REPO}`);
     if (repoInfo.private && !MIRROR) {
       throw new Error(
-        'The source repository is private. Set mirror-assets: true so the files can be downloaded publicly from this hub.',
+        'The source repository is private. Set mirror-assets: true so the files can be downloaded publicly from this library.',
       );
     }
 

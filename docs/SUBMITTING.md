@@ -21,8 +21,8 @@ Read the [manifest reference](MANIFEST.md) for every field.
 
 Create a **fine-grained personal access token**:
 
-- **Resource owner:** the account/org that owns the hub repository.
-- **Repository access:** only the hub repository.
+- **Resource owner:** the account/org that owns the library repository.
+- **Repository access:** only the library repository.
 - **Permissions:** `Contents: Read and write`, `Pull requests: Read and write`.
 
 In your app repository, add it as an Actions secret named `HUB_TOKEN`
@@ -62,13 +62,13 @@ GitHub release, so the template only needs the slow-changing metadata:
 }
 ```
 
-Replace `OWNER` in `$schema` with the hub's owner so your editor can provide completions. The
+Replace `OWNER` in `$schema` with the library owner so your editor can provide completions. The
 template is not validated on its own; the merged manifest is.
 
 ### 3. Add the workflow
 
 ```yaml
-name: Publish to Static App Hub
+name: Publish to App Library
 
 on:
   release:
@@ -89,7 +89,7 @@ jobs:
       HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
 ```
 
-Set `mirror-assets: true` when the source repository is private. The hub will copy the release
+Set `mirror-assets: true` when the source repository is private. The library will copy the release
 assets to its own public Releases and use those URLs in the manifest.
 
 ### 4. Publish a release
@@ -99,7 +99,7 @@ Publish a GitHub Release as usual. The workflow:
 1. reads the release and its uploaded assets;
 2. infers `os`, `arch`, and `kind` from each file name;
 3. downloads each asset to compute its size and SHA-256 (disable with `checksums: false`);
-4. optionally mirrors the assets into the hub's Releases (tag `app-<id>-v<version>`);
+4. optionally mirrors the assets into the library's Releases (tag `app-<id>-v<version>`);
 5. merges the new release into the existing manifest, keeping older releases;
 6. validates the result and opens a pull request here.
 
@@ -115,10 +115,10 @@ The PR body links back to your release and lists every asset for review.
 | `version` | tag without `v` | Override the display version. |
 | `channel` | `stable` | `stable`, `beta`, or `nightly`. |
 | `notes` | release body | Override release notes (Markdown). |
-| `mirror-assets` | `false` | Copy assets to the hub's Releases. Required for private repos. |
+| `mirror-assets` | `false` | Copy assets to the library's Releases. Required for private repos. |
 | `checksums` | `true` | Download assets to compute size and SHA-256. |
 | `dry-run` | `false` | Build and validate without pushing or opening a PR. |
-| `hub-repo` | required | The hub's `owner/repo`. |
+| `hub-repo` | required | The library's `owner/repo`. |
 | `base-branch` | `main` | Branch that manifest PRs target. |
 
 ## Private repositories
@@ -126,13 +126,13 @@ The PR body links back to your release and lists every asset for review.
 GitHub Pages can only serve public files, so a private release URL is useless to visitors. With
 `mirror-assets: true`:
 
-- every uploaded asset is downloaded with your workflow token and uploaded to the hub's public
+- every uploaded asset is downloaded with your workflow token and uploaded to the library's public
   Releases under `app-<id>-v<version>`;
 - the manifest gets public `https://github.com/<hub>/releases/download/...` URLs instead;
-- re-running the workflow replaces same-named files on that hub release;
+- re-running the workflow replaces same-named files on that mirrored release;
 - only release assets are copied — your repository, history, and source stay private.
 
-The hub repository must be public for mirrored downloads to work.
+The library repository must be public for mirrored downloads to work.
 
 ## Manual pull request
 
@@ -201,20 +201,20 @@ Only the listed fields override the generated asset. This is also how to supply 
 ## Removing an app
 
 Open a PR that deletes `apps/<id>.json`. The deployed site updates on merge. Mirrored files remain
-in the hub's Releases; delete the `app-<id>-*` releases manually if you also want those gone.
+in the library's Releases; delete the `app-<id>-*` releases manually if you also want those gone.
 
 ## Troubleshooting
 
 | Symptom | Fix |
 | --- | --- |
 | `The source repository is private. Set mirror-assets: true` | Enable mirroring, or make the release assets public. |
-| `GitHub API … failed (403)` while opening the PR | `HUB_TOKEN` is missing or lacks `Contents` / `Pull requests` write access to the hub. |
+| `GitHub API … failed (403)` while opening the PR | `HUB_TOKEN` is missing or lacks `Contents` / `Pull requests` write access to the library. |
 | `No manifest changes to submit` | The generated manifest matches what is already published. |
 | `Manifest validation failed` | Read the field path in the error; check against the [manifest reference](MANIFEST.md). |
 | Downloads 404 | Use public URLs, or enable `mirror-assets`. |
 | Workflow is slow | It downloads assets for checksums. Use `checksums: false` for huge releases. |
 | Assets are misclassified | Add the override stub shown above. |
-| The manifest PR conflicts after another release merged | Re-run the workflow; it rebuilds from the current hub `main`. |
+| The manifest PR conflicts after another release merged | Re-run the workflow; it rebuilds from the current library `main`. |
 | No PR after a successful run | Check `dry-run` and the workflow log for the `Open a pull request` step. |
 
 Validate locally at any time:

@@ -19,7 +19,7 @@ const templateSnippet = `{
   "releases": []
 }`;
 
-const workflowSnippet = `name: Publish to Static App Hub
+const workflowSnippet = `name: Publish to App Library
 on:
   release:
     types: [published]
@@ -53,22 +53,22 @@ git push -u origin add-my-app`;
 
 <Base
   title="How it works"
-  description="Publish a downloadable app to Static App Hub from any release pipeline — installers, portable builds, packages, or scripts."
+  description="Publish a downloadable app to the library from any release pipeline — installers, portable builds, packages, or scripts."
 >
   <div class="container">
     <header class="page-header">
-      <p class="eyebrow"><span class="eyebrow-dot"></span> For maintainers</p>
-      <h1 class="page-title">Ship your app to a page<br />people can actually find.</h1>
+      <p class="eyebrow"><span class="eyebrow-dot"></span> How it works</p>
+      <h1 class="page-title">A small library,<br />built from releases.</h1>
       <p class="page-lede">
-        Static App Hub is a directory of downloadable software, stored as JSON in a Git repository
-        and served by GitHub Pages. No accounts, no database, no runtime server.
+        Every app is one JSON file in this repository. Releases come from each project's own pipeline
+        and are reviewed before they go live. No database, no runtime server.
       </p>
     </header>
 
     <div class="about-grid">
       <div class="content">
         <section class="section" id="how">
-          <h2 class="section-title">How the hub works</h2>
+          <h2 class="section-title">How the library works</h2>
           <div class="prose" style="margin-top:14px">
             <p>
               Every app is a single file in <a href={`${repoUrl}/tree/main/apps`} target="_blank" rel="noopener noreferrer"><code>apps/&lt;id&gt;.json</code></a>.
@@ -77,8 +77,8 @@ git push -u origin add-my-app`;
               <code>main</code>, the site is rebuilt and deployed to GitHub Pages.
             </p>
             <p>
-              Reviewing happens in pull requests, so every download link is visible and versioned.
-              Nothing is uploaded to this site at runtime.
+              Because everything lives in Git, every download link is versioned and reviewed in a pull
+              request. Nothing is uploaded at runtime.
             </p>
           </div>
 
@@ -86,7 +86,7 @@ git push -u origin add-my-app`;
             <div class="step">
               <span class="step-num">01</span>
               <div>
-                <h3>Cut a release in your repo</h3>
+                <h3>Cut a release in the app's repo</h3>
                 <p>Attach installers, archives, packages, or scripts to a GitHub Release as usual.</p>
               </div>
             </div>
@@ -95,7 +95,7 @@ git push -u origin add-my-app`;
               <div>
                 <h3>Run the submission workflow</h3>
                 <p>
-                  Your pipeline generates a manifest from the release — with checksums and
+                  The project's pipeline generates a manifest from the release — with checksums and
                   platform detection — and opens a pull request here.
                 </p>
               </div>
@@ -103,9 +103,9 @@ git push -u origin add-my-app`;
             <div class="step">
               <span class="step-num">03</span>
               <div>
-                <h3>Get reviewed and deployed</h3>
+                <h3>Review and deploy</h3>
                 <p>
-                  Once the manifest PR is merged, CI rebuilds the site. Your app page is live within a
+                  Once the manifest PR is merged, CI rebuilds the site. The new build is live within a
                   minute.
                 </p>
               </div>
@@ -119,8 +119,8 @@ git push -u origin add-my-app`;
             <span class="section-note">Recommended</span>
           </div>
           <p class="muted" style="font-size:14px">
-            The hub exposes a reusable workflow. Call it from your release pipeline and it will build
-            the manifest, validate it, and open the PR for you.
+            This repository exposes a reusable workflow. Call it from an app's release pipeline and it
+            will build the manifest, validate it, and open the PR.
           </p>
 
           <div class="steps" style="margin-top:20px">
@@ -162,8 +162,8 @@ git push -u origin add-my-app`;
               <div>
                 <h3>Add the workflow</h3>
                 <p>
-                  Set <code>mirror-assets: true</code> if your repository is private. The hub will copy
-                  release assets into its own public Releases so downloads work.
+                  Set <code>mirror-assets: true</code> if the app's repository is private. This
+                  repository will copy release assets into its own public Releases so downloads work.
                 </p>
                 <div class="code-snippet">
                   <code>{workflowSnippet}</code>
@@ -237,9 +237,9 @@ git push -u origin add-my-app`;
           <h2 class="section-title">Good to know</h2>
           <div class="prose" style="margin-top:14px">
             <p><strong>Can I update metadata without a release?</strong> Yes. Call the workflow without <code>release-tag</code>, or edit <code>apps/&lt;id&gt;.json</code> directly.</p>
-            <p><strong>Does the hub host files?</strong> Only when mirroring a private release. Otherwise it links to your release assets.</p>
+            <p><strong>Does this site host files?</strong> Only when mirroring a private release. Otherwise it links to each project's release assets.</p>
             <p><strong>Beta and nightly builds?</strong> Publish them with <code>channel: beta</code> or <code>channel: nightly</code>. Stable builds remain the default download.</p>
-            <p><strong>How do I remove an app?</strong> Open a PR that deletes <code>apps/&lt;id&gt;.json</code>. Existing mirrored releases stay in the hub's Releases until you delete them.</p>
+            <p><strong>How do I remove an app?</strong> Open a PR that deletes <code>apps/&lt;id&gt;.json</code>. Existing mirrored releases stay in this repository's Releases until you delete them.</p>
           </div>
         </section>
       </div>
