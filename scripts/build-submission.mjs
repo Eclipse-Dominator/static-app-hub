@@ -261,13 +261,6 @@ async function main() {
   }
   template.id = APP_ID;
 
-  for (const field of ['name', 'tagline', 'category']) {
-    if (!template[field]) throw new Error(`Manifest template needs a "${field}" field`);
-  }
-  if (!template.links || (!template.links.repo && !template.links.homepage)) {
-    throw new Error('Manifest template needs links.repo or links.homepage');
-  }
-
   const outputPath = path.join(HUB_APPS_DIR, `${APP_ID}.json`);
   const existing = readJson(outputPath, null);
   const downloads = new Map();
@@ -373,7 +366,7 @@ async function main() {
     } else {
       mirror = await mirrorRelease({
         appId: APP_ID,
-        appName: template.name ?? APP_ID,
+        appName: merged.name,
         version: releaseVersion,
         channel: CHANNEL,
         notes: releaseMeta.notes,

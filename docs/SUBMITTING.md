@@ -214,6 +214,7 @@ in the hub's Releases; delete the `app-<id>-*` releases manually if you also wan
 | Downloads 404 | Use public URLs, or enable `mirror-assets`. |
 | Workflow is slow | It downloads assets for checksums. Use `checksums: false` for huge releases. |
 | Assets are misclassified | Add the override stub shown above. |
+| The manifest PR conflicts after another release merged | Re-run the workflow; it rebuilds from the current hub `main`. |
 | No PR after a successful run | Check `dry-run` and the workflow log for the `Open a pull request` step. |
 
 Validate locally at any time:

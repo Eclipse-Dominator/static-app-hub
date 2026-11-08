@@ -45,5 +45,8 @@ jobs:
       - name: Validate manifests
         run: npm run validate -- --json
 
+      - name: Type-check Astro
+        run: npm run check
+
       - name: Build site
         run: npm run build

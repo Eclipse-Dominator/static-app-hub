@@ -129,7 +129,7 @@ Keep entries newest-first. The validation script warns if the dates are out of o
 | `name` | yes | File name shown to users. Must be unique within a release. |
 | `url` | yes | Direct public download URL (`https://` recommended). |
 | `os` | yes | `windows`, `macos`, `linux`, `android`, `ios`, `web`, or `any`. |
-| `arch` | no | `x64` (default display as "Any" if omitted), `arm64`, `x86`, `universal`, `any`. |
+| `arch` | no | `x64`, `arm64`, `x86`, `universal`, or `any` (the default when omitted). |
 | `kind` | yes | `installer`, `portable`, `archive`, `package`, `script`, `dmg`, `msi`, `deb`, `rpm`, `appimage`, `binary`, `other`. |
 | `label` | no | Friendly override, e.g. "Portable (no install)". |
 | `recommended` | no | Prefer this file for a given OS when auto-detecting the visitor's platform. |
