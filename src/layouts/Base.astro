@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { title, description = config.description, bodyClass = '' } = Astro.props;
-const pageTitle = title ? `${title} · ${config.title}` : `${config.title} — ${config.tagline}`;
+const pageTitle = title ? `${title} · ${config.title}` : config.title;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const current = Astro.url.pathname.slice(base.length) || '/';
 const isHome = current === '/' || current === '';
@@ -92,7 +92,7 @@ const appCount = apps.length;
           <img src={withBase('/favicon.svg')} alt="" width="20" height="20" />
           {config.title}
         </a>
-        <span class="mono">{appCount} app{appCount === 1 ? '' : 's'} · personal library</span>
+        <span class="mono">{appCount} app{appCount === 1 ? '' : 's'}</span>
         <nav class="footer-links" aria-label="Footer">
           <a href={withBase('/')}>All apps</a>
           <a href={withBase('/about/')}>Publishing guide</a>

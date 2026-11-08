@@ -2,83 +2,40 @@
 import Base from '../layouts/Base.astro';
 import AppCard from '../components/AppCard.astro';
 import Icon from '../components/Icon.astro';
-import {
-  appPlatforms,
-  apps,
-  categoryLabel,
-  osLabel,
-  totalAssets,
-  totalReleases,
-  withBase,
-} from '../lib/registry';
+import { apps, categoryLabel } from '../lib/registry';
 
 const categoryCounts = new Map<string, number>();
 for (const app of apps) {
   categoryCounts.set(app.category, (categoryCounts.get(app.category) ?? 0) + 1);
 }
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-const releaseCount = totalReleases();
-const assetCount = totalAssets();
-
-const platformOrder = ['windows', 'macos', 'linux', 'android', 'ios', 'web'] as const;
-const presentPlatforms = new Set<string>();
-for (const app of apps) {
-  for (const platform of appPlatforms(app)) {
-    if (platform !== 'any') presentPlatforms.add(platform);
-  }
-}
-const heroPlatforms = platformOrder
-  .filter((platform) => presentPlatforms.has(platform))
-  .map((platform) => osLabel(platform));
-const platformSummary =
-  heroPlatforms.length === 0
-    ? 'Cross-platform'
-    : heroPlatforms.length === 1
-      ? heroPlatforms[0]
-      : `${heroPlatforms.slice(0, -1).join(', ')} & ${heroPlatforms[heroPlatforms.length - 1]}`;
 ---
 
-<Base description={`Browse ${apps.length} downloadable apps — installers, portable builds, packages, and scripts for Windows, macOS, and Linux.`}>
-  <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
-        <p class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          Personal library · <strong>{apps.length} app{apps.length === 1 ? '' : 's'}</strong>
-        </p>
-        <h1 class="hero-title">
-          The apps I build.<br />
-          <span class="gradient">All in one place.</span>
-        </h1>
-        <p class="hero-lede">
-          A small collection of tools, utilities, and experiments — with direct downloads for
-          Windows, macOS, and Linux. Private and in-progress projects included.
-        </p>
-        <div class="hero-meta">
-          <span><strong>{releaseCount}</strong> releases</span>
-          <span class="dot"></span>
-          <span><strong>{assetCount}</strong> downloadable files</span>
-          <span class="dot"></span>
-          <span>{platformSummary}</span>
-        </div>
-        <div class="search">
-          <Icon name="search" size={18} />
-          <label class="visually-hidden" for="app-search">Search apps</label>
-          <input
-            id="app-search"
-            type="search"
-            placeholder="Search apps and tools…"
-            autocomplete="off"
-            spellcheck="false"
-            aria-describedby="results-count"
-          />
-          <kbd>/</kbd>
-        </div>
+<Base description="Quick downloads for my apps and tools.">
+  <div class="container library-page">
+    <header class="library-head">
+      <div class="library-heading">
+        <h1 class="library-title">Apps</h1>
+        <span class="library-count" id="results-count" aria-live="polite">
+          {apps.length} app{apps.length === 1 ? '' : 's'}
+        </span>
       </div>
-    </div>
-  </section>
 
-  <section class="container" aria-label="Applications">
+      <div class="search library-search">
+        <Icon name="search" size={18} />
+        <label class="visually-hidden" for="app-search">Search apps</label>
+        <input
+          id="app-search"
+          type="search"
+          placeholder="Search…"
+          autocomplete="off"
+          spellcheck="false"
+          aria-describedby="results-count"
+        />
+        <kbd>/</kbd>
+      </div>
+    </header>
+
     <div class="filters">
       <span class="filters-label">Platform</span>
       <div class="chips" role="group" aria-label="Filter by platform">
@@ -104,7 +61,7 @@ const platformSummary =
       <div class="select-wrap">
         <label class="visually-hidden" for="sort-select">Sort</label>
         <select class="select" id="sort-select">
-          <option value="recommended">Recommended</option>
+          <option value="recommended">Default</option>
           <option value="newest">Newest</option>
           <option value="name">A–Z</option>
         </select>
@@ -112,35 +69,84 @@ const platformSummary =
       </div>
     </div>
 
-    <div class="results-line">
-      <span id="results-count" aria-live="polite">
-        {apps.length} app{apps.length === 1 ? '' : 's'}
-      </span>
-      <span>Newest releases first</span>
-    </div>
-
     <div class="app-grid" id="app-grid">
       {apps.map((app, index) => <AppCard app={app} index={index} />)}
     </div>
 
     <div class="empty-state" id="empty-state">
-      <h2>No apps match those filters</h2>
-      <p>Try a broader search, or clear the platform and category filters.</p>
+      <h2>No matching apps</h2>
       <button class="btn btn-small" type="button" id="clear-filters">Clear filters</button>
     </div>
-
-    <div class="submit-cta">
-      <div class="callout">
-        <Icon name="zap" size={18} />
-        <div>
-          <strong>Published a new build?</strong> Add one step to the project's release workflow and it
-          opens a manifest pull request here automatically — public or private. <a href={withBase('/about/#submit')}>Publishing guide →</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <script>
     import '../scripts/filters';
   </script>
 </Base>
+
+<style>
+  .library-page {
+    padding-top: 42px;
+  }
+
+  .library-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding-bottom: 14px;
+  }
+
+  .library-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .library-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.35rem);
+    letter-spacing: -0.035em;
+  }
+
+  .library-count {
+    color: var(--muted-2);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .library-search {
+    flex: 1 1 280px;
+    max-width: 420px;
+    margin-top: 0;
+  }
+
+  .library-search input {
+    height: 44px;
+    box-shadow: none;
+  }
+
+  .library-page .filters {
+    margin-bottom: 18px;
+    padding: 14px 0;
+  }
+
+  .library-page .empty-state {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 640px) {
+    .library-page {
+      padding-top: 28px;
+    }
+
+    .library-head {
+      padding-bottom: 10px;
+    }
+
+    .library-search {
+      flex-basis: 100%;
+      max-width: none;
+    }
+  }
+</style>

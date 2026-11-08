@@ -59,12 +59,6 @@ const href = withBase(`/apps/${app.id}/`);
 
     <p class="app-tagline">{app.tagline}</p>
 
-    {tags.length > 0 && (
-      <div class="card-tags">
-        {tags.map((tag) => <span class="tag">{tag}</span>)}
-      </div>
-    )}
-
     <div class="card-footer">
       <div class="platforms">
         {platforms.map((os) => <PlatformBadge os={os} short />)}
@@ -77,10 +71,5 @@ const href = withBase(`/apps/${app.id}/`);
         <span class="card-updated">{formatDate(release.date)}</span>
       </div>
     </div>
-
-    <span class="card-cta">
-      View downloads
-      <Icon name="arrow-right" size={13} />
-    </span>
   </a>
 </article>

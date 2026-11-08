@@ -79,8 +79,7 @@ Edit `hub.config.json` before deploying:
 {
   "title": "App Library",
   "shortTitle": "App Library",
-  "description": "A personal collection of apps and tools, with direct downloads for Windows, macOS, and Linux.",
-  "tagline": "The apps I build, in one place.",
+  "description": "Quick downloads for my apps and tools.",
   "owner": "your-github-name",
   "repo": "static-app-hub",
   "url": "https://your-github-name.github.io/static-app-hub"
