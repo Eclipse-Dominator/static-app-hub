@@ -92,11 +92,11 @@ needed unless you use a custom domain.
 `SITE_URL` and `BASE_PATH` are supplied to the build by `actions/configure-pages`, so the site works
 at any project-page path. Local builds default to `http://localhost:4321` at `/`.
 
-## Removing the sample apps
+## Branches
 
-`termboard`, `pixelforge`, and `hush` are example manifests with placeholder download URLs. Delete
-them (and their icons in `public/icons/`) once you add real entries, or keep them while developing
-the UI.
+- `main` — the production registry and the branch GitHub Pages deploys. It is intentionally empty
+  until you add your own apps.
+- `sample` — a fully populated demo with example manifests, icons, and download pages.
 
 ## License
 
