@@ -275,34 +275,11 @@ samp {
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 50%, var(--border)), 0 6px 20px -8px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-}
-
-.nav-link {
-  padding: 8px 12px;
-  border-radius: var(--radius-xs);
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 520;
-  transition: color 0.15s ease, background 0.15s ease;
-}
-.nav-link:hover {
-  color: var(--text);
-  background: var(--surface-3);
-}
-.nav-link.is-active {
-  color: var(--text);
-}
-
 .header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: 6px;
+  margin-left: auto;
 }
 
 .icon-btn {
@@ -418,31 +395,39 @@ html[data-theme='light'] .theme-toggle .moon {
 
 .search {
   position: relative;
-  margin-top: 34px;
-  max-width: 600px;
+  width: 100%;
+}
+
+.header-search {
+  flex: 0 1 420px;
+  margin-left: auto;
+}
+
+.has-search .header-actions {
+  margin-left: 8px;
 }
 
 .search svg {
   position: absolute;
-  left: 16px;
+  left: 13px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   color: var(--muted-2);
   pointer-events: none;
 }
 
 .search input {
   width: 100%;
-  height: 52px;
-  padding: 0 88px 0 46px;
+  height: 40px;
+  padding: 0 52px 0 38px;
   border: 1px solid var(--border);
-  border-radius: 13px;
+  border-radius: 9px;
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   color: var(--text);
-  font-size: 15px;
-  box-shadow: var(--shadow-soft);
+  font-size: 13.5px;
+  box-shadow: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   backdrop-filter: blur(10px);
 }
@@ -452,20 +437,20 @@ html[data-theme='light'] .theme-toggle .moon {
 .search input:focus {
   outline: none;
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent), var(--shadow-soft);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .search kbd {
   position: absolute;
-  right: 12px;
+  right: 9px;
   top: 50%;
   transform: translateY(-50%);
-  padding: 3px 7px;
+  padding: 2px 6px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 5px;
   background: var(--bg-soft);
   color: var(--muted-2);
-  font-size: 11px;
+  font-size: 10.5px;
   line-height: 1.4;
   pointer-events: none;
 }
@@ -481,14 +466,6 @@ html[data-theme='light'] .theme-toggle .moon {
   margin-bottom: 26px;
   border-top: 1px solid var(--border-soft);
   border-bottom: 1px solid var(--border-soft);
-}
-
-.filters-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted-2);
 }
 
 .chips {
@@ -1548,22 +1525,9 @@ html[data-theme='light'] .theme-toggle .moon {
   flex-wrap: wrap;
   align-items: center;
   gap: 18px 28px;
-  padding: 30px 0;
+  padding: 24px 0;
   color: var(--muted-2);
   font-size: 12.5px;
-}
-
-.footer-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-weight: 580;
-}
-.footer-brand img {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
 }
 
 .footer-links {
@@ -1573,10 +1537,6 @@ html[data-theme='light'] .theme-toggle .moon {
 }
 .footer-links a:hover {
   color: var(--text);
-}
-
-.footer-note {
-  margin-left: auto;
 }
 
 /* ── Toast ──────────────────────────────────────────────────────────────── */
@@ -1622,20 +1582,15 @@ html[data-theme='light'] .theme-toggle .moon {
   .container {
     padding-inline: 18px;
   }
-  .hero {
-    padding-top: 52px;
+  .header-inner {
+    gap: 14px;
   }
-  .hero-lede {
-    font-size: 16px;
-  }
-  .hero::before {
-    background-size: 42px 42px;
+  .header-search {
+    flex: 1 1 auto;
+    max-width: none;
   }
   .filters {
     gap: 10px;
-  }
-  .filters-label {
-    display: none;
   }
   .filters-spacer {
     display: none;
@@ -1664,21 +1619,11 @@ html[data-theme='light'] .theme-toggle .moon {
     margin-left: 46px;
     width: calc(100% - 46px);
   }
-  .footer-note {
-    margin-left: 0;
-  }
-  .nav-link.optional {
-    display: none;
-  }
 }
 
 @media (max-width: 520px) {
-  .hero-title {
-    font-size: 2.35rem;
-  }
-  .search input {
-    height: 48px;
-    padding-right: 16px;
+  .brand-name {
+    display: none;
   }
   .search kbd {
     display: none;
@@ -1694,9 +1639,6 @@ html[data-theme='light'] .theme-toggle .moon {
   }
   .download-actions .btn-primary {
     width: 100%;
-  }
-  .filters-spacer {
-    display: none;
   }
   .install-grid {
     grid-template-columns: 1fr;

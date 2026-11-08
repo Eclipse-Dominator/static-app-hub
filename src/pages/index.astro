@@ -11,33 +11,14 @@ for (const app of apps) {
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 ---
 
-<Base description="Quick downloads for my apps and tools.">
+<Base search description="Quick downloads for my apps and tools.">
   <div class="container library-page">
-    <header class="library-head">
-      <div class="library-heading">
-        <h1 class="library-title">Apps</h1>
-        <span class="library-count" id="results-count" aria-live="polite">
-          {apps.length} app{apps.length === 1 ? '' : 's'}
-        </span>
-      </div>
-
-      <div class="search library-search">
-        <Icon name="search" size={18} />
-        <label class="visually-hidden" for="app-search">Search apps</label>
-        <input
-          id="app-search"
-          type="search"
-          placeholder="Search…"
-          autocomplete="off"
-          spellcheck="false"
-          aria-describedby="results-count"
-        />
-        <kbd>/</kbd>
-      </div>
-    </header>
+    <h1 class="visually-hidden">Apps</h1>
+    <span class="visually-hidden" id="results-count" aria-live="polite">
+      {apps.length} app{apps.length === 1 ? '' : 's'}
+    </span>
 
     <div class="filters">
-      <span class="filters-label">Platform</span>
       <div class="chips" role="group" aria-label="Filter by platform">
         <button class="chip" type="button" data-platform="all" aria-pressed="true">All</button>
         <button class="chip" type="button" data-platform="windows" aria-pressed="false">Windows</button>
@@ -86,49 +67,13 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a
 
 <style>
   .library-page {
-    padding-top: 42px;
-  }
-
-  .library-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px 24px;
-    padding-bottom: 14px;
-  }
-
-  .library-heading {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-  }
-
-  .library-title {
-    font-size: clamp(1.8rem, 3.5vw, 2.35rem);
-    letter-spacing: -0.035em;
-  }
-
-  .library-count {
-    color: var(--muted-2);
-    font-size: 13px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .library-search {
-    flex: 1 1 280px;
-    max-width: 420px;
-    margin-top: 0;
-  }
-
-  .library-search input {
-    height: 44px;
-    box-shadow: none;
+    padding-top: 22px;
   }
 
   .library-page .filters {
     margin-bottom: 18px;
-    padding: 14px 0;
+    padding: 0 0 14px;
+    border-top: 0;
   }
 
   .library-page .empty-state {
@@ -137,16 +82,7 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a
 
   @media (max-width: 640px) {
     .library-page {
-      padding-top: 28px;
-    }
-
-    .library-head {
-      padding-bottom: 10px;
-    }
-
-    .library-search {
-      flex-basis: 100%;
-      max-width: none;
+      padding-top: 18px;
     }
   }
 </style>

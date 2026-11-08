@@ -84,7 +84,7 @@ const structuredData = {
 <Base title={app.name} description={app.tagline}>
   <div class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href={withBase('/')}>Browse</a>
+      <a href={withBase('/')}>Apps</a>
       <Icon name="arrow-right" size={12} />
       <span aria-current="page">{app.name}</span>
     </nav>
@@ -256,9 +256,7 @@ const structuredData = {
 
           {hasChecksums && (
             <p class="checksums-note">
-              Every file has a SHA-256 checksum — use the copy button to verify your download. Files are
-              hosted by each project's release page, unless the assets were mirrored into this
-              repository.
+              Files are hosted by each project's release page, unless they were mirrored here.
             </p>
           )}
         </section>
@@ -266,8 +264,7 @@ const structuredData = {
         {installs.length > 0 && (
           <section class="section" aria-labelledby="install-heading">
             <div class="section-head">
-              <h2 class="section-title" id="install-heading">Install with a package manager</h2>
-              <span class="section-note">or a one-line script</span>
+              <h2 class="section-title" id="install-heading">Install</h2>
             </div>
             <div class="install-grid">
               {installs.map((entry) => (
