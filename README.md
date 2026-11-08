@@ -8,7 +8,7 @@ The site is generated with [Astro](https://astro.build) and deployed to GitHub P
 database and no runtime server: every app is a reviewed JSON manifest in [`apps/`](apps/), and
 other repositories submit new releases through a reusable GitHub Actions workflow.
 
-- **Site:** `https://<owner>.github.io/static-app-hub/` (set by GitHub Pages)
+- **Site:** `https://eclipse-dominator.github.io/static-app-hub/`
 - **Schema:** [`schemas/app.schema.json`](schemas/app.schema.json)
 - **Submission guide:** [`docs/SUBMITTING.md`](docs/SUBMITTING.md)
 
@@ -80,9 +80,9 @@ Edit `hub.config.json` before deploying:
   "title": "App Library",
   "shortTitle": "App Library",
   "description": "Quick downloads for my apps and tools.",
-  "owner": "your-github-name",
+  "owner": "Eclipse-Dominator",
   "repo": "static-app-hub",
-  "url": "https://your-github-name.github.io/static-app-hub"
+  "url": "https://eclipse-dominator.github.io/static-app-hub"
 }
 ```
 

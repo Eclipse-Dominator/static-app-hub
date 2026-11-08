@@ -39,7 +39,7 @@ GitHub release, so the template only needs the slow-changing metadata:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/OWNER/static-app-hub/main/schemas/app.schema.json",
+  "$schema": "https://raw.githubusercontent.com/Eclipse-Dominator/static-app-hub/main/schemas/app.schema.json",
   "id": "my-app",
   "name": "My App",
   "tagline": "One sentence about what it does.",
@@ -62,8 +62,8 @@ GitHub release, so the template only needs the slow-changing metadata:
 }
 ```
 
-Replace `OWNER` in `$schema` with the library owner so your editor can provide completions. The
-template is not validated on its own; the merged manifest is.
+The `$schema` URL points at the published schema so your editor can provide completions. Update it
+if you fork the library. The template is not validated on its own; the merged manifest is.
 
 ### 3. Add the workflow
 
@@ -78,9 +78,9 @@ jobs:
   submit:
     permissions:
       contents: read
-    uses: YOUR-NAME/static-app-hub/.github/workflows/submit-app.yml@main
+    uses: Eclipse-Dominator/static-app-hub/.github/workflows/submit-app.yml@main
     with:
-      hub-repo: YOUR-NAME/static-app-hub
+      hub-repo: Eclipse-Dominator/static-app-hub
       app-id: my-app
       manifest: .github/app-hub.json
       release-tag: ${{ github.event.release.tag_name }}

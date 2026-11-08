@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/OWNER/static-app-hub/main/schemas/app.schema.json",
+  "$id": "https://raw.githubusercontent.com/Eclipse-Dominator/static-app-hub/main/schemas/app.schema.json",
   "title": "App Library — application manifest",
   "description": "One JSON file per application in apps/<id>.json. See docs/MANIFEST.md.",
   "type": "object",

@@ -11,14 +11,16 @@ for (const app of apps) {
 const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 ---
 
-<Base search description="Quick downloads for my apps and tools.">
+<Base search={apps.length > 0} description="Quick downloads for my apps and tools.">
   <div class="container library-page">
     <h1 class="visually-hidden">Apps</h1>
     <span class="visually-hidden" id="results-count" aria-live="polite">
       {apps.length} app{apps.length === 1 ? '' : 's'}
     </span>
 
-    <div class="filters">
+    {apps.length > 0 ? (
+      <>
+        <div class="filters">
       <div class="chips" role="group" aria-label="Filter by platform">
         <button class="chip" type="button" data-platform="all" aria-pressed="true">All</button>
         <button class="chip" type="button" data-platform="windows" aria-pressed="false">Windows</button>
@@ -58,6 +60,12 @@ const categories = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1] || a
       <h2>No matching apps</h2>
       <button class="btn btn-small" type="button" id="clear-filters">Clear filters</button>
     </div>
+      </>
+    ) : (
+      <div class="empty-state is-visible">
+        <h2>No apps yet</h2>
+      </div>
+    )}
   </div>
 
   <script>
