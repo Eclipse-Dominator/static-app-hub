@@ -1464,10 +1464,16 @@ html[data-theme='light'] .theme-toggle .moon {
   flex-direction: column;
   gap: 14px;
   margin-top: 4px;
+  min-width: 0;
 }
 .step {
   display: flex;
   gap: 14px;
+  min-width: 0;
+}
+.step > div {
+  flex: 1;
+  min-width: 0;
 }
 .step-num {
   display: grid;
@@ -1494,6 +1500,7 @@ html[data-theme='light'] .theme-toggle .moon {
 
 .code-snippet {
   position: relative;
+  max-width: 100%;
   margin: 12px 0 0;
   padding: 14px 44px 14px 16px;
   border: 1px solid var(--border-soft);
