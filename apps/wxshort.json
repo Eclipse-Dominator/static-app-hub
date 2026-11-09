@@ -23,6 +23,53 @@
   },
   "releases": [
     {
+      "version": "0.2.0",
+      "date": "2026-11-09",
+      "channel": "stable",
+      "title": "wxshort v0.2.0",
+      "notes": "## What's Changed\n* Add Telegram bot link import by @Eclipse-Dominator in https://github.com/Eclipse-Dominator/wxshort/pull/1\n\n## New Contributors\n* @Eclipse-Dominator made their first contribution in https://github.com/Eclipse-Dominator/wxshort/pull/1\n\n**Full Changelog**: https://github.com/Eclipse-Dominator/wxshort/compare/v0.1.1...v0.2.0",
+      "assets": [
+        {
+          "name": "wxshort-gui-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.0/wxshort-gui-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40902944,
+          "sha256": "e9b854f85c649677b641c0c1af3aadd32151ad22db6588c697754f3016fbe2c7",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-gui-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.0/wxshort-gui-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23710799,
+          "sha256": "3e03d21e361f4f9c1663227436866867677807be1c331ee803dfbb5702a53d48",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.0/wxshort-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40910432,
+          "sha256": "53cf0d63644e28bd2cd67a52d1ce571ba0fd2fb314ebb59d2b3521f9ba8aa7f3"
+        },
+        {
+          "name": "wxshort-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.0/wxshort-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23723324,
+          "sha256": "f5919e767eb7ac5997c1b30668339b0c9f19fb16478e3d4682dad3bf8a50f374"
+        }
+      ]
+    },
+    {
       "version": "0.1.1",
       "date": "2026-11-09",
       "channel": "stable",
