@@ -263,6 +263,7 @@ async function main() {
 
   const outputPath = path.join(HUB_APPS_DIR, `${APP_ID}.json`);
   const existing = readJson(outputPath, null);
+  const isNewApp = !existing;
   const downloads = new Map();
 
   let candidateRelease = null;
@@ -395,6 +396,7 @@ async function main() {
   appendOutput('version', version);
   appendOutput('asset_count', String(assetCount));
   appendOutput('mirrored', String(!!mirror));
+  appendOutput('new_app', String(isNewApp));
   appendOutput('release_url', mirror?.releaseUrl ?? '');
 
   const rows = (candidateRelease?.assets ?? [])
@@ -429,6 +431,7 @@ async function main() {
         version,
         assets: assetCount,
         mirrored: !!mirror,
+        newApp: isNewApp,
         output: outputPath,
         dryRun: DRY_RUN,
       },
