@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Eclipse-Dominator/static-app-hub/main/schemas/app.schema.json",
+  "id": "wxshort",
+  "name": "wxshort",
+  "tagline": "Lightweight WeChat Channels downloader with a queue, per-item quality and QR login for Windows and Linux.",
+  "description": "A small, dependency-free GUI/CLI downloader for **WeChat Channels** (视频号) videos.\n\n- Download queue with per-item quality, progress, speed/ETA, retry and remove actions\n- Share-link parsing, direct CDN URLs and pluggable resolvers\n- In-app WeChat QR login with automatic cookie capture\n- English and Simplified Chinese interface\n- Streaming downloads with resume support\n- No Electron or browser runtime; the GUI uses Tkinter",
+  "category": "media",
+  "tags": [
+    "wechat",
+    "video-downloader",
+    "tkinter",
+    "cross-platform"
+  ],
+  "accent": "#22c55e",
+  "license": "MIT",
+  "author": {
+    "name": "wxshort contributors"
+  },
+  "links": {
+    "repo": "https://github.com/Eclipse-Dominator/wxshort",
+    "docs": "https://github.com/Eclipse-Dominator/wxshort#readme",
+    "issues": "https://github.com/Eclipse-Dominator/wxshort/issues"
+  },
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-09",
+      "channel": "stable",
+      "title": "wxshort v0.1.0",
+      "notes": "**Full Changelog**: https://github.com/Eclipse-Dominator/wxshort/commits/v0.1.0",
+      "assets": [
+        {
+          "name": "wxshort-0.1.0-linux-x64",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.0/wxshort-0.1.0-linux-x64",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "other",
+          "size": 40903280,
+          "sha256": "0145750ef04bf6ddf140f0911f14af775bc655584c9ac3c135eae3ae22203d72"
+        },
+        {
+          "name": "wxshort-0.1.0-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.0/wxshort-0.1.0-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23716077,
+          "sha256": "a72ce4ee5131d7a60dd6c1a619aaaad39bba1917a314a02fded26cbdf4b4ab9e",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-gui-0.1.0-linux-x64",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.0/wxshort-gui-0.1.0-linux-x64",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "other",
+          "size": 40893008,
+          "sha256": "a9a46b2ed71a3058024b8082681a4e5547360ed4a6d87aeaee0b96d17795184a"
+        },
+        {
+          "name": "wxshort-gui-0.1.0-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.0/wxshort-gui-0.1.0-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23700637,
+          "sha256": "85e2df6cd6f67c9acb710ae5761ab99dc0a2a29d871b303328068a473d53366c"
+        }
+      ]
+    }
+  ]
+}
