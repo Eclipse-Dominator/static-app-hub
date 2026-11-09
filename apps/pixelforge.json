@@ -8,7 +8,6 @@
   "tags": ["images", "converter", "batch", "desktop"],
   "icon": "/icons/pixelforge.svg",
   "accent": "#ff9f6e",
-  "featured": true,
   "license": "Apache-2.0",
   "author": {
     "name": "PixelForge Studio"

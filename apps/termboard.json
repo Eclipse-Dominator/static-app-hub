@@ -8,7 +8,6 @@
   "tags": ["tui", "git", "dashboard", "cross-platform"],
   "icon": "/icons/termboard.svg",
   "accent": "#7cf29c",
-  "featured": true,
   "license": "MIT",
   "author": {
     "name": "Termboard Contributors",
