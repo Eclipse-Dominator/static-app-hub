@@ -21,7 +21,7 @@ npm run validate   # schema + semantic checks for apps/*.json
 npm run build      # validate, then build to dist/
 ```
 
-Node.js 20.11+ (see `.nvmrc`).
+Node.js 22.23.4+ (see `.nvmrc`).
 
 ## How it works
 
