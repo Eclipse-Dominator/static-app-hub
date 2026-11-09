@@ -230,14 +230,6 @@ jobs:
 
           echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
 
-          if [ "${NEW_APP}" = "true" ]; then
-            gh label create first-submission \
-              --repo "${HUB_REPO}" \
-              --color "fbca04" \
-              --description "First app submission; requires manual review" 2>/dev/null || true
-            gh pr edit "$pr_url" --repo "${HUB_REPO}" --add-label "first-submission"
-          fi
-
           if [ "${AUTO_MERGE}" = "true" ]; then
             if [ "${NEW_APP}" = "true" ]; then
               echo "::notice::First submission for ${APP_ID} left open for review."
