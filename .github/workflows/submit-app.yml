@@ -62,10 +62,10 @@ on:
         type: boolean
         default: false
       auto-merge:
-        description: Auto-merge releases for apps that already exist in the library. First submissions always wait for manual review.
+        description: Auto-merge later releases for an already-approved app. Enabled by default; first submissions always wait for review.
         required: false
         type: boolean
-        default: false
+        default: true
       hub-repo:
         description: owner/repo of the App Library (for example, your-name/static-app-hub).
         required: true
