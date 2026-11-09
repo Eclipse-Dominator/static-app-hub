@@ -23,6 +23,53 @@
   },
   "releases": [
     {
+      "version": "0.2.2",
+      "date": "2026-11-09",
+      "channel": "stable",
+      "title": "wxshort v0.2.2",
+      "notes": "**Full Changelog**: https://github.com/Eclipse-Dominator/wxshort/compare/v0.2.1...v0.2.2",
+      "assets": [
+        {
+          "name": "wxshort-gui-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.2/wxshort-gui-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40905224,
+          "sha256": "31b7f745b433c14e7bf54774c6374fb941ea5079c619b4a1c8443a4de7537590",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-gui-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.2/wxshort-gui-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23713423,
+          "sha256": "b49207a569728e18b720c72346d9ca0ec04e80a6176fd0f3a54f9cbba5caa6b4",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.2/wxshort-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40915128,
+          "sha256": "6dac0e4974d5d7264f198e388f80c215d96d20cae1f0046ed2be41bf17f368fd"
+        },
+        {
+          "name": "wxshort-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.2.2/wxshort-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23727234,
+          "sha256": "21148a449f665857d27bb3d200658486d26a23a2e05c4bf5b308f86e2a9de6a9"
+        }
+      ]
+    },
+    {
       "version": "0.2.1",
       "date": "2026-11-09",
       "channel": "stable",
