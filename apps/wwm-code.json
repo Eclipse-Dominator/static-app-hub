@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Eclipse-Dominator/static-app-hub/main/schemas/app.schema.json",
+  "id": "wwm-code",
+  "name": "WWM Code",
+  "tagline": "Batch-submit redemption codes in Where Winds Meet from a terminal.",
+  "description": "A keyboard-driven TUI that automates the in-game **Exchange Code** dialog for *Where Winds Meet*. Paste a list of codes, calibrate the dialog coordinates once, and let it type, submit, and classify each result. Works on Windows and Hyprland (Linux).\n\nSee the [project README](https://github.com/Eclipse-Dominator/wwm-code#readme) for setup and usage.",
+  "category": "games",
+  "tags": [
+    "gaming",
+    "automation",
+    "tui",
+    "windows",
+    "linux"
+  ],
+  "accent": "#7cf29c",
+  "author": {
+    "name": "Eclipse-Dominator",
+    "url": "https://github.com/Eclipse-Dominator"
+  },
+  "links": {
+    "repo": "https://github.com/Eclipse-Dominator/wwm-code",
+    "docs": "https://github.com/Eclipse-Dominator/wwm-code#readme",
+    "issues": "https://github.com/Eclipse-Dominator/wwm-code/issues"
+  },
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-09",
+      "channel": "stable",
+      "notes": "**Full Changelog**: https://github.com/Eclipse-Dominator/wwm-code/commits/v0.1.0",
+      "assets": [
+        {
+          "name": "wwm-code-linux-x64",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wwm-code-v0.1.0/wwm-code-linux-x64",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40186632,
+          "sha256": "b6c893f03bc2741c8f89a062a8729516f72fab884083a59161dc8e83d3ba857a",
+          "recommended": true
+        },
+        {
+          "name": "wwm-code-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wwm-code-v0.1.0/wwm-code-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 40096874,
+          "sha256": "0ca199ce870f1eff8100ea0012274ac42cd742ce03ba0e80656faad9ae0115ce",
+          "recommended": true
+        }
+      ]
+    }
+  ]
+}
