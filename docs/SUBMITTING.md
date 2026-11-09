@@ -127,7 +127,8 @@ The PR body links back to your release and lists every asset for review.
 ### Auto-merge
 
 Set `auto-merge: true` to publish updates without a manual merge. The first submission for an app is
-never auto-merged: it gets the `first-submission` label and waits for a human to review and merge it.
+never auto-merged: the PR body marks it as a first submission and waits for a human to review and
+merge it.
 
 Once that first manifest is on `main`, later releases for the same `app-id` auto-merge after the
 workflow validates the manifest and builds the site. The merge uses `HUB_TOKEN`, so the Pages deploy
