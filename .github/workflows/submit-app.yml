@@ -62,7 +62,7 @@ on:
         type: boolean
         default: false
       auto-merge:
-        description: Merge the manifest pull request automatically after the hub build passes.
+        description: Auto-merge releases for apps that already exist in the library. First submissions always wait for manual review.
         required: false
         type: boolean
         default: false
@@ -168,6 +168,7 @@ jobs:
           BASE_BRANCH: ${{ inputs.base-branch }}
           AUTO_MERGE: ${{ inputs.auto-merge }}
           APP_ID: ${{ steps.build.outputs.app_id }}
+          NEW_APP: ${{ steps.build.outputs.new_app }}
           VERSION: ${{ steps.build.outputs.version }}
           RELEASE_TAG: ${{ inputs.release-tag || github.event.release.tag_name }}
           MIRRORED: ${{ steps.build.outputs.mirrored }}
@@ -206,6 +207,9 @@ jobs:
             if [ "${MIRRORED}" = "true" ]; then
               printf -- '- Assets were mirrored to the hub Releases (%s), so private files are publicly downloadable.\n' "${RELEASE_URL}"
             fi
+            if [ "${NEW_APP}" = "true" ]; then
+              printf '\n**First submission for this app.** It needs a manual review and merge. Once merged, future releases can auto-merge.\n'
+            fi
             printf '\nThis PR only changes `apps/%s.json`.\n\n' "${APP_ID}"
             printf '%s\n' \
               'Review checklist:' \
@@ -226,8 +230,18 @@ jobs:
 
           echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
 
+          if [ "${NEW_APP}" = "true" ]; then
+            gh label create first-submission \
+              --repo "${HUB_REPO}" \
+              --color "fbca04" \
+              --description "First app submission; requires manual review" 2>/dev/null || true
+            gh pr edit "$pr_url" --repo "${HUB_REPO}" --add-label "first-submission"
+          fi
+
           if [ "${AUTO_MERGE}" = "true" ]; then
-            if gh pr merge "$pr_url" --repo "${HUB_REPO}" --squash --delete-branch; then
+            if [ "${NEW_APP}" = "true" ]; then
+              echo "::notice::First submission for ${APP_ID} left open for review."
+            elif gh pr merge "$pr_url" --repo "${HUB_REPO}" --squash --delete-branch; then
               echo "Merged the manifest PR automatically."
             elif gh pr merge "$pr_url" --repo "${HUB_REPO}" --squash --auto --delete-branch; then
               echo "Enabled auto-merge; the PR will merge when checks pass."

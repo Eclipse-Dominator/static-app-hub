@@ -85,7 +85,7 @@ jobs:
       manifest: .github/app-hub.json
       release-tag: ${{ github.event.release.tag_name }}
       mirror-assets: false
-      auto-merge: true   # merge the manifest PR automatically
+      auto-merge: true   # auto-merge later releases (first submission needs review)
     secrets:
       HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
 ```
@@ -103,7 +103,7 @@ Publish a GitHub Release as usual. The workflow:
 4. optionally mirrors the assets into the library's Releases (tag `app-<id>-v<version>`);
 5. merges the new release into the existing manifest, keeping older releases;
 6. validates the result and builds the site;
-7. opens a pull request here — and merges it automatically when `auto-merge: true`.
+7. opens a pull request here — and auto-merges later releases when `auto-merge: true`.
 
 The PR body links back to your release and lists every asset for review.
 
@@ -120,15 +120,18 @@ The PR body links back to your release and lists every asset for review.
 | `mirror-assets` | `false` | Copy assets to the library's Releases. Required for private repos. |
 | `checksums` | `true` | Download assets to compute size and SHA-256. |
 | `dry-run` | `false` | Build and validate without pushing or opening a PR. |
-| `auto-merge` | `false` | Merge the manifest PR automatically once the hub build passes. |
+| `auto-merge` | `false` | Auto-merge later releases for an already-approved app. First submissions always need review. |
 | `hub-repo` | required | The library's `owner/repo`. |
 | `base-branch` | `main` | Branch that manifest PRs target. |
 
 ### Auto-merge
 
-Set `auto-merge: true` to publish without a manual merge. The workflow validates the manifest and
-builds the site first; if either step fails, nothing is merged. The merge uses `HUB_TOKEN`, so the
-Pages deploy starts immediately afterwards.
+Set `auto-merge: true` to publish updates without a manual merge. The first submission for an app is
+never auto-merged: it gets the `first-submission` label and waits for a human to review and merge it.
+
+Once that first manifest is on `main`, later releases for the same `app-id` auto-merge after the
+workflow validates the manifest and builds the site. The merge uses `HUB_TOKEN`, so the Pages deploy
+starts immediately afterwards.
 
 If `main` has protection rules that require checks or reviews, the workflow falls back to GitHub's
 native auto-merge and waits for those requirements. Enable **Allow auto-merge** in the library's
