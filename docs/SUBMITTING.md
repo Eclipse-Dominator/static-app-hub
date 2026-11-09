@@ -85,6 +85,7 @@ jobs:
       manifest: .github/app-hub.json
       release-tag: ${{ github.event.release.tag_name }}
       mirror-assets: false
+      auto-merge: true   # merge the manifest PR automatically
     secrets:
       HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
 ```
@@ -101,7 +102,8 @@ Publish a GitHub Release as usual. The workflow:
 3. downloads each asset to compute its size and SHA-256 (disable with `checksums: false`);
 4. optionally mirrors the assets into the library's Releases (tag `app-<id>-v<version>`);
 5. merges the new release into the existing manifest, keeping older releases;
-6. validates the result and opens a pull request here.
+6. validates the result and builds the site;
+7. opens a pull request here — and merges it automatically when `auto-merge: true`.
 
 The PR body links back to your release and lists every asset for review.
 
@@ -118,8 +120,21 @@ The PR body links back to your release and lists every asset for review.
 | `mirror-assets` | `false` | Copy assets to the library's Releases. Required for private repos. |
 | `checksums` | `true` | Download assets to compute size and SHA-256. |
 | `dry-run` | `false` | Build and validate without pushing or opening a PR. |
+| `auto-merge` | `false` | Merge the manifest PR automatically once the hub build passes. |
 | `hub-repo` | required | The library's `owner/repo`. |
 | `base-branch` | `main` | Branch that manifest PRs target. |
+
+### Auto-merge
+
+Set `auto-merge: true` to publish without a manual merge. The workflow validates the manifest and
+builds the site first; if either step fails, nothing is merged. The merge uses `HUB_TOKEN`, so the
+Pages deploy starts immediately afterwards.
+
+If `main` has protection rules that require checks or reviews, the workflow falls back to GitHub's
+native auto-merge and waits for those requirements.
+
+Only enable auto-merge for repositories you control. A merged manifest can change download links and
+rendered Markdown, so treat `HUB_TOKEN` and every repository that holds it as trusted.
 
 ## Private repositories
 

@@ -61,6 +61,11 @@ on:
         required: false
         type: boolean
         default: false
+      auto-merge:
+        description: Merge the manifest pull request automatically after the hub build passes.
+        required: false
+        type: boolean
+        default: false
       hub-repo:
         description: owner/repo of the App Library (for example, your-name/static-app-hub).
         required: true
@@ -145,17 +150,23 @@ jobs:
         working-directory: hub
         run: node scripts/validate.mjs
 
+      - name: Build the site with the new manifest
+        working-directory: hub
+        run: npm run build
+
       - name: Show the resulting change
         working-directory: hub
         run: git diff --stat -- apps && git diff -- apps
 
       - name: Open a pull request
+        id: pr
         if: ${{ !inputs.dry-run }}
         working-directory: hub
         env:
           GH_TOKEN: ${{ secrets.HUB_TOKEN }}
           HUB_REPO: ${{ inputs.hub-repo }}
           BASE_BRANCH: ${{ inputs.base-branch }}
+          AUTO_MERGE: ${{ inputs.auto-merge }}
           APP_ID: ${{ steps.build.outputs.app_id }}
           VERSION: ${{ steps.build.outputs.version }}
           RELEASE_TAG: ${{ inputs.release-tag || github.event.release.tag_name }}
@@ -206,9 +217,21 @@ jobs:
               '_Opened automatically by the App Library submission workflow._'
           } > "${RUNNER_TEMP}/pr-body.md"
 
-          gh pr create \
+          pr_url="$(gh pr create \
             --repo "${HUB_REPO}" \
             --base "${BASE_BRANCH}" \
             --head "${branch}" \
             --title "${title}" \
-            --body-file "${RUNNER_TEMP}/pr-body.md"
+            --body-file "${RUNNER_TEMP}/pr-body.md")"
+
+          echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+
+          if [ "${AUTO_MERGE}" = "true" ]; then
+            if gh pr merge "$pr_url" --repo "${HUB_REPO}" --squash --delete-branch; then
+              echo "Merged the manifest PR automatically."
+            elif gh pr merge "$pr_url" --repo "${HUB_REPO}" --squash --auto --delete-branch; then
+              echo "Enabled auto-merge; the PR will merge when checks pass."
+            else
+              echo "::warning::Could not auto-merge the manifest PR; merge it manually."
+            fi
+          fi
