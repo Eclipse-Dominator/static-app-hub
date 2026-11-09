@@ -32,6 +32,7 @@ jobs:
       manifest: .github/app-hub.json
       release-tag: \${{ github.event.release.tag_name }}
       mirror-assets: false
+      auto-merge: true
     secrets:
       HUB_TOKEN: \${{ secrets.HUB_TOKEN }}`;
 
@@ -164,6 +165,7 @@ git push -u origin add-my-app`;
                 <p>
                   Set <code>mirror-assets: true</code> if the app's repository is private. This
                   repository will copy release assets into its own public Releases so downloads work.
+                  Set <code>auto-merge: true</code> to merge the manifest PR after validation.
                 </p>
                 <div class="code-snippet">
                   <code>{workflowSnippet}</code>
