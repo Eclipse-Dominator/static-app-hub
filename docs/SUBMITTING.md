@@ -131,7 +131,8 @@ builds the site first; if either step fails, nothing is merged. The merge uses `
 Pages deploy starts immediately afterwards.
 
 If `main` has protection rules that require checks or reviews, the workflow falls back to GitHub's
-native auto-merge and waits for those requirements.
+native auto-merge and waits for those requirements. Enable **Allow auto-merge** in the library's
+repository settings for that fallback to work.
 
 Only enable auto-merge for repositories you control. A merged manifest can change download links and
 rendered Markdown, so treat `HUB_TOKEN` and every repository that holds it as trusted.
