@@ -46,7 +46,6 @@ function loadApps(): App[] {
   }
 
   return apps.sort((a, b) => {
-    if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
     const ad = a.releases[0]?.date ?? '';
     const bd = b.releases[0]?.date ?? '';
     if (ad !== bd) return bd.localeCompare(ad);

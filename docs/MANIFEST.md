@@ -25,7 +25,6 @@ Run `npm run validate` after editing.
   "tags": ["cli", "cross-platform"],
   "icon": "/icons/my-app.svg",
   "accent": "#7cf29c",
-  "featured": false,
   "license": "MIT",
   "author": { "name": "Your Name", "url": "https://example.com" },
   "links": {
@@ -75,7 +74,6 @@ Run `npm run validate` after editing.
 | `tags` | no | Up to 10 short strings, used by search. |
 | `icon` | no | Absolute `https://` URL or a path inside `public/` (e.g. `/icons/my-app.svg`). Square images work best; monochrome SVG is ideal. Falls back to a letter monogram. |
 | `accent` | no | Six-digit hex colour, e.g. `#7cf29c`, used for the card glow. |
-| `featured` | no | Pin the app to the top of the browse page. Use sparingly. |
 | `license` | no | SPDX identifier or short label (`MIT`, `Apache-2.0`, `Proprietary`). |
 | `author` | no | `{ "name": "…", "url": "…" }`. |
 | `links` | yes | At least `repo` or `homepage`. See below. |

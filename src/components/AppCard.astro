@@ -9,7 +9,6 @@ import {
   latestRelease,
   withBase,
 } from '../lib/registry';
-import Icon from './Icon.astro';
 import PlatformBadge from './PlatformBadge.astro';
 
 interface Props {
@@ -33,7 +32,6 @@ const href = withBase(`/apps/${app.id}/`);
   data-name={`${app.name} ${app.tagline} ${app.id} ${tags.join(' ')}`.toLowerCase()}
   data-category={app.category}
   data-platforms={appPlatforms(app).join(' ')}
-  data-featured={app.featured ? 'true' : 'false'}
   data-date={release.date}
   data-name-sort={app.name.toLowerCase()}
 >
@@ -45,14 +43,7 @@ const href = withBase(`/apps/${app.id}/`);
         <span class="app-icon app-icon--fallback" aria-hidden="true">{app.name.slice(0, 1).toUpperCase()}</span>
       )}
       <div class="card-heading">
-        <h2 class="app-name">
-          {app.name}
-          {app.featured && (
-            <span class="featured-mark" title="Featured">
-              <Icon name="star" size={10} />
-            </span>
-          )}
-        </h2>
+        <h2 class="app-name">{app.name}</h2>
         <p class="app-category">{categoryLabel(app.category)}</p>
       </div>
     </div>

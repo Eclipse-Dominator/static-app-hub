@@ -641,18 +641,6 @@ html[data-theme='light'] .theme-toggle .moon {
   letter-spacing: -0.02em;
 }
 
-.featured-mark {
-  display: inline-grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  flex: none;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--card-accent) 16%, transparent);
-  color: var(--card-accent);
-  font-size: 10px;
-}
-
 .app-category {
   margin-top: 3px;
   color: var(--muted-2);

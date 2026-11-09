@@ -93,7 +93,6 @@ export interface App {
   tags?: string[];
   icon?: string;
   accent?: string;
-  featured?: boolean;
   license?: string;
   author?: { name: string; url?: string };
   links: Links;
