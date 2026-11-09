@@ -23,6 +23,53 @@
   },
   "releases": [
     {
+      "version": "0.1.1",
+      "date": "2026-11-09",
+      "channel": "stable",
+      "title": "wxshort v0.1.1",
+      "notes": "**Full Changelog**: https://github.com/Eclipse-Dominator/wxshort/compare/v0.1.0...v0.1.1",
+      "assets": [
+        {
+          "name": "wxshort-gui-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.1/wxshort-gui-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40893624,
+          "sha256": "d6ee32e1e6fc89388c1dc1393c93fc7c2d0368821304f97d3978f6afc9b2d2d0",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-gui-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.1/wxshort-gui-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23700591,
+          "sha256": "05cde380292f9341ec95d01a4e6cd77662804457f5e884c8d65bc2c721ff6b42",
+          "recommended": true
+        },
+        {
+          "name": "wxshort-linux-x64.bin",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.1/wxshort-linux-x64.bin",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "binary",
+          "size": 40902056,
+          "sha256": "a2b5d275d237d192a7af7aac30e385ec3e3e476ada014de4c61aaae37953146e"
+        },
+        {
+          "name": "wxshort-windows-x64.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-wxshort-v0.1.1/wxshort-windows-x64.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "portable",
+          "size": 23715375,
+          "sha256": "06757760ce13d44bab4890457622ac078a0659804400f0948db6cfca7bddd5f5"
+        }
+      ]
+    },
+    {
       "version": "0.1.0",
       "date": "2026-11-09",
       "channel": "stable",
@@ -69,5 +116,6 @@
         }
       ]
     }
-  ]
+  ],
+  "install": {}
 }
