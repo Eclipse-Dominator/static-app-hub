@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Eclipse-Dominator/static-app-hub/main/schemas/app.schema.json",
+  "id": "hongguo-download",
+  "name": "Hongguo Download",
+  "tagline": "A lightweight Linux/Windows desktop downloader for Hongguo short dramas, with batch episode downloads.",
+  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
+  "category": "media",
+  "tags": [
+    "video",
+    "downloader",
+    "short-drama",
+    "tauri",
+    "cross-platform"
+  ],
+  "accent": "#ff3b5c",
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Eclipse-Dominator"
+  },
+  "links": {
+    "repo": "https://github.com/Eclipse-Dominator/hongguo-download",
+    "docs": "https://github.com/Eclipse-Dominator/hongguo-download#readme"
+  },
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-11-12",
+      "channel": "stable",
+      "title": "Hongguo Download v0.1.0",
+      "notes": "Hongguo Download v0.1.0.\n\nLinux: `.deb` or `.AppImage`.\nWindows: NSIS installer or `.msi`.\n\nThis is an unofficial tool. Use it only for content you are allowed to access,\nand comply with Hongguo's terms and local copyright law.",
+      "assets": [
+        {
+          "name": "Hongguo.Download_0.1.0_amd64.AppImage",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.0/Hongguo.Download_0.1.0_amd64.AppImage",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "appimage",
+          "size": 82651640,
+          "sha256": "f8e542e05d5b1ca26d9ec35ec787027924e0bc25bc3025120db08fc4af2c7a1d",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.0_amd64.deb",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.0/Hongguo.Download_0.1.0_amd64.deb",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "deb",
+          "size": 4312266,
+          "sha256": "6ba11c716af5ec5174984097253f5f7b8981b085f295f033ff087c627cba9ed2"
+        },
+        {
+          "name": "Hongguo.Download_0.1.0_x64-setup.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.0/Hongguo.Download_0.1.0_x64-setup.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "installer",
+          "size": 2712334,
+          "sha256": "a91f8bde49b5e2e93b9a5970c8faa1d130c83a8942998809aed0d5a1914ff1b6",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.0_x64_en-US.msi",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.0/Hongguo.Download_0.1.0_x64_en-US.msi",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "msi",
+          "size": 3780608,
+          "sha256": "7ff7ec27c23e80fb48c3b75530d58a0595d9966acc4b1eb866786a54f07e5193"
+        }
+      ]
+    }
+  ]
+}
