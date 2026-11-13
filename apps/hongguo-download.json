@@ -3,7 +3,7 @@
   "id": "hongguo-download",
   "name": "Hongguo Download",
   "tagline": "A lightweight Linux/Windows desktop downloader for Hongguo short dramas, with batch episode downloads.",
-  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
+  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- ByteVC2-only episodes are converted to H.264/AAC with a bundled librempeg helper.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
   "category": "media",
   "tags": [
     "video",
@@ -26,6 +26,53 @@
     "windows"
   ],
   "releases": [
+    {
+      "version": "0.1.2",
+      "date": "2026-11-13",
+      "channel": "stable",
+      "title": "Hongguo Download v0.1.2",
+      "notes": "Hongguo Download v0.1.2.\n\nLinux: `.deb` or `.AppImage`.\nWindows: NSIS installer or `.msi`.\n\nByteVC2-only episodes are converted to H.264/AAC automatically.\n\nThis is an unofficial tool. Use it only for content you are allowed to access,\nand comply with Hongguo's terms and local copyright law.",
+      "assets": [
+        {
+          "name": "Hongguo.Download_0.1.2_amd64.AppImage",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.2/Hongguo.Download_0.1.2_amd64.AppImage",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "appimage",
+          "size": 85535224,
+          "sha256": "40397653b2a96eb90b63d7408d67737c6e435d87337df7c7a181294dc8c6b7fe",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.2_amd64.deb",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.2/Hongguo.Download_0.1.2_amd64.deb",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "deb",
+          "size": 7515824,
+          "sha256": "a4428cf4747afb4c1c3c7e959135a4d7f73bc45ca5d500fe6fbeec57b5c194bd"
+        },
+        {
+          "name": "Hongguo.Download_0.1.2_x64-setup.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.2/Hongguo.Download_0.1.2_x64-setup.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "installer",
+          "size": 5021032,
+          "sha256": "541f9cbe74fabb4d6c7748ae5d02df0a145ed88dd92cd00ab1262ab644895e2e",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.2_x64_en-US.msi",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.2/Hongguo.Download_0.1.2_x64_en-US.msi",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "msi",
+          "size": 6844416,
+          "sha256": "7f0ce2c668a0451d302ed6c2e8fe6f719f1681619eaf427e78fb7bc16ce71a9e"
+        }
+      ]
+    },
     {
       "version": "0.1.1",
       "date": "2026-11-13",
