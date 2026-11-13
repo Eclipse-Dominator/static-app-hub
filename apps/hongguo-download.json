@@ -3,7 +3,7 @@
   "id": "hongguo-download",
   "name": "Hongguo Download",
   "tagline": "A lightweight Linux/Windows desktop downloader for Hongguo short dramas, with batch episode downloads.",
-  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- ByteVC2-only episodes are converted to H.264/AAC with a bundled librempeg helper, as H.264 or H.265/HEVC, with high/balanced/small quality presets.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
+  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- ByteVC2-only episodes are converted to H.264/AAC with a bundled librempeg helper, as H.264 or H.265/HEVC, with high/balanced/small quality presets.\n- Portable no-install builds for Windows and Linux.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
   "category": "media",
   "tags": [
     "video",
@@ -26,6 +26,72 @@
     "windows"
   ],
   "releases": [
+    {
+      "version": "0.1.5",
+      "date": "2026-11-13",
+      "channel": "stable",
+      "title": "Hongguo Download v0.1.5",
+      "notes": "Hongguo Download v0.1.5.\n\nLinux: `.deb`, `.AppImage`, or portable `.tar.gz`.\nWindows: NSIS installer, `.msi`, or portable `.zip`.\n\nPortable builds keep settings, device identity, and webview data in\na `data` folder next to the executable.\n\nByteVC2-only episodes are converted to H.264/AAC automatically.\n\nThis is an unofficial tool. Use it only for content you are allowed to access,\nand comply with Hongguo's terms and local copyright law.",
+      "assets": [
+        {
+          "name": "Hongguo.Download_0.1.5_amd64-portable.tar.gz",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_amd64-portable.tar.gz",
+          "os": "any",
+          "arch": "x64",
+          "kind": "archive",
+          "size": 8481159,
+          "sha256": "bc001f13b5c44db63c8f3b84544f8d7db2358b3a2fc1143fe80bca94f2e42d57",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.5_amd64.AppImage",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_amd64.AppImage",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "appimage",
+          "size": 86571512,
+          "sha256": "c8a18648f9269855e119a02b2634247037b9cc757afb7ea92727470a7c6b9735",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.5_amd64.deb",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_amd64.deb",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "deb",
+          "size": 8718848,
+          "sha256": "6d2fea47ffd4a53ec6a6e589b73b2663878fcf8606b2dbcbfa3f6f6ef2512136"
+        },
+        {
+          "name": "Hongguo.Download_0.1.5_x64-portable.zip",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_x64-portable.zip",
+          "os": "any",
+          "arch": "x64",
+          "kind": "archive",
+          "size": 8158505,
+          "sha256": "a01884c08cd4d9ada46e2fc3a23a993be7fb3a573c42923280ee827d900e8af0"
+        },
+        {
+          "name": "Hongguo.Download_0.1.5_x64-setup.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_x64-setup.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "installer",
+          "size": 6043037,
+          "sha256": "43cb88ae2dfdf30b04f7f89a0879e0e775356f6357b88d14ba062f376a94451a",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.5_x64_en-US.msi",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.5/Hongguo.Download_0.1.5_x64_en-US.msi",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "msi",
+          "size": 8204288,
+          "sha256": "861fdf57551b138fa99764fd424af8027b00313c53afbdd81a7922637c5b814b"
+        }
+      ]
+    },
     {
       "version": "0.1.4",
       "date": "2026-11-13",
