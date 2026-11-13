@@ -27,6 +27,53 @@
   ],
   "releases": [
     {
+      "version": "0.1.1",
+      "date": "2026-11-13",
+      "channel": "stable",
+      "title": "Hongguo Download v0.1.1",
+      "notes": "Hongguo Download v0.1.1.\n\nLinux: `.deb` or `.AppImage`.\nWindows: NSIS installer or `.msi`.\n\nThis is an unofficial tool. Use it only for content you are allowed to access,\nand comply with Hongguo's terms and local copyright law.",
+      "assets": [
+        {
+          "name": "Hongguo.Download_0.1.1_amd64.AppImage",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.1/Hongguo.Download_0.1.1_amd64.AppImage",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "appimage",
+          "size": 82684408,
+          "sha256": "a15b7ff22b72237e28e3fc07e68a9f70a4601f784188721ddfcd19afe647fb0d",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.1_amd64.deb",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.1/Hongguo.Download_0.1.1_amd64.deb",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "deb",
+          "size": 4337004,
+          "sha256": "e0fc58e8cd94e91f917dc782e079639de340dc0e49d6c29a2e4d858a3b6cce43"
+        },
+        {
+          "name": "Hongguo.Download_0.1.1_x64-setup.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.1/Hongguo.Download_0.1.1_x64-setup.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "installer",
+          "size": 2733156,
+          "sha256": "be14411a8043b237368a1a400def0387f1503c1d7a025b76d6dd23244ec915df",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.1_x64_en-US.msi",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.1/Hongguo.Download_0.1.1_x64_en-US.msi",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "msi",
+          "size": 3805184,
+          "sha256": "eec74316a8e59153f0e0a9de331abf5b82fe9e6a67718ea29fae9ae9d63d034d"
+        }
+      ]
+    },
+    {
       "version": "0.1.0",
       "date": "2026-11-12",
       "channel": "stable",
@@ -73,5 +120,6 @@
         }
       ]
     }
-  ]
+  ],
+  "install": {}
 }
