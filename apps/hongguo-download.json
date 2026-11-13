@@ -3,7 +3,7 @@
   "id": "hongguo-download",
   "name": "Hongguo Download",
   "tagline": "A lightweight Linux/Windows desktop downloader for Hongguo short dramas, with batch episode downloads.",
-  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- ByteVC2-only episodes are converted to H.264/AAC with a bundled librempeg helper.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
+  "description": "Hongguo Download is a Tauri-based desktop app for saving Hongguo short-drama episodes for personal offline viewing.\n\n- Lightweight Tauri 2 shell with a Rust backend; no Electron.\n- Linux and Windows builds from the same codebase.\n- Resolve a share link, select episodes by range, and download in batches.\n- Default App source uses an anonymous device identity; no account login is required.\n- Optional 360p web source and an in-app web login fallback.\n- ByteVC2-only episodes are converted to H.264/AAC with a bundled librempeg helper, with high/balanced/small quality presets.\n- Resumable downloads, per-episode progress, cancellation, and cross-platform file naming.\n\n> For personal use only. Respect Hongguo's terms of service and local copyright law. This is an unofficial tool and does not grant rights to redistribute content.",
   "category": "media",
   "tags": [
     "video",
@@ -26,6 +26,53 @@
     "windows"
   ],
   "releases": [
+    {
+      "version": "0.1.3",
+      "date": "2026-11-13",
+      "channel": "stable",
+      "title": "Hongguo Download v0.1.3",
+      "notes": "Hongguo Download v0.1.3.\n\nLinux: `.deb` or `.AppImage`.\nWindows: NSIS installer or `.msi`.\n\nByteVC2-only episodes are converted to H.264/AAC automatically.\n\nThis is an unofficial tool. Use it only for content you are allowed to access,\nand comply with Hongguo's terms and local copyright law.",
+      "assets": [
+        {
+          "name": "Hongguo.Download_0.1.3_amd64.AppImage",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.3/Hongguo.Download_0.1.3_amd64.AppImage",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "appimage",
+          "size": 85535224,
+          "sha256": "e2d5fd857804936d3aab799dd33d12bf7bec81b51188c2347f7aa7c96e406e5e",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.3_amd64.deb",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.3/Hongguo.Download_0.1.3_amd64.deb",
+          "os": "linux",
+          "arch": "x64",
+          "kind": "deb",
+          "size": 7516682,
+          "sha256": "1be901664da64fc6a35efff9854f6249c4077f1fd89cfd0db9ae14045164b719"
+        },
+        {
+          "name": "Hongguo.Download_0.1.3_x64-setup.exe",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.3/Hongguo.Download_0.1.3_x64-setup.exe",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "installer",
+          "size": 5019613,
+          "sha256": "6c741739c9d48b5831bd3d2864e4c9bb301836adb83b0f3f9f066cf56797928f",
+          "recommended": true
+        },
+        {
+          "name": "Hongguo.Download_0.1.3_x64_en-US.msi",
+          "url": "https://github.com/Eclipse-Dominator/static-app-hub/releases/download/app-hongguo-download-v0.1.3/Hongguo.Download_0.1.3_x64_en-US.msi",
+          "os": "windows",
+          "arch": "x64",
+          "kind": "msi",
+          "size": 6844416,
+          "sha256": "d83ddfed546f5b1af0a08384675099d15904c2b2529c27ed6fdeab31b9681918"
+        }
+      ]
+    },
     {
       "version": "0.1.2",
       "date": "2026-11-13",
