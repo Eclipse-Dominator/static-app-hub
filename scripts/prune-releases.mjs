@@ -46,7 +46,9 @@ async function api(urlPath, init = {}) {
     const text = await res.text().catch(() => '');
     throw new Error(`${init.method ?? 'GET'} ${urlPath} failed (${res.status}): ${text.slice(0, 300)}`);
   }
-  return res.status === 404 ? null : res.json();
+  if (res.status === 404 || res.status === 204) return null;
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
 }
 
 async function listReleases() {
