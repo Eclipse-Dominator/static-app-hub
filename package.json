@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "validate": "node scripts/validate.mjs",
     "check": "astro check",
-    "submit:local": "node scripts/submit-local.mjs"
+    "submit:local": "node scripts/submit-local.mjs",
+    "prune:releases": "node scripts/prune-releases.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",
