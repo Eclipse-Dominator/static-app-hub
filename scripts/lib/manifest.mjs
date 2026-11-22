@@ -150,8 +150,29 @@ export function applyRecommended(assets) {
 
 /* ── Merging manifests ────────────────────────────────────────────────── */
 
+export const RETAIN_RELEASES = 2;
+
 function definedEntries(object) {
   return Object.fromEntries(Object.entries(object ?? {}).filter(([, value]) => value !== undefined));
+}
+
+/**
+ * Keep the newest releases, while making sure the newest stable release
+ * survives if the newest entries are all pre-releases.
+ */
+export function trimReleases(releases, limit = RETAIN_RELEASES) {
+  const sorted = [...releases].sort((a, b) =>
+    String(b.date ?? '').localeCompare(String(a.date ?? '')),
+  );
+  const kept = sorted.slice(0, limit);
+  const isStable = (release) => (release.channel ?? 'stable') === 'stable';
+
+  if (kept.length > 0 && !kept.some(isStable)) {
+    const stable = sorted.find(isStable);
+    if (stable) kept[kept.length - 1] = stable;
+  }
+
+  return kept;
 }
 
 /**
@@ -176,9 +197,7 @@ export function mergeManifest(existing, incoming) {
     if (!byKey.has(key)) byKey.set(key, release);
   }
 
-  merged.releases = [...byKey.values()]
-    .sort((a, b) => String(b.date ?? '').localeCompare(String(a.date ?? '')))
-    .slice(0, 30);
+  merged.releases = trimReleases([...byKey.values()]);
 
   return merged;
 }

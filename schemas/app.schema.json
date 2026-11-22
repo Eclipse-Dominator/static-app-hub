@@ -135,8 +135,8 @@
     "releases": {
       "type": "array",
       "minItems": 0,
-      "maxItems": 30,
-      "description": "Newest release first. Required for published manifests; submission templates may leave this empty.",
+      "maxItems": 2,
+      "description": "Newest release first. The hub keeps only the latest two releases per app; submission templates may leave this empty.",
       "items": { "$ref": "#/definitions/release" }
     }
   },

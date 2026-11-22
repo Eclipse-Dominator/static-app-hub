@@ -79,7 +79,7 @@ Run `npm run validate` after editing.
 | `links` | yes | At least `repo` or `homepage`. See below. |
 | `platforms` | no | Display override, e.g. `["windows","macos","linux"]`. Derived from assets when omitted. |
 | `install` | no | Package-manager / script commands. See below. |
-| `releases` | yes for publication | Newest first, 1–30 entries. A submission template may leave this empty; the workflow fills it in. |
+| `releases` | yes for publication | Newest first, 1–2 entries. Older releases are dropped automatically; submission templates may leave this empty. |
 
 ## Links
 
@@ -119,6 +119,10 @@ Commands are rendered with copy buttons. Only include ones that actually work.
 | `assets` | yes | 1–60 downloadable files. |
 
 Keep entries newest-first. The validation script warns if the dates are out of order.
+
+The hub retains only the **latest two releases per app**. The submission workflow trims older
+entries automatically, and the scheduled prune job removes older mirrored release assets from this
+repository. Source releases in the app's own repository are never touched.
 
 ## Assets
 
