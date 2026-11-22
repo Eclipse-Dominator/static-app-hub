@@ -5,7 +5,12 @@
   "tagline": "A keyboard-first dashboard for your terminal.",
   "description": "Termboard keeps the things you check a hundred times a day in one place: repository status, CI runs, open pull requests, and your calendar — all rendered in a fast, fully keyboard-driven TUI.\n\nIt ships as a single static binary, starts in under 50 ms, and never phones home.",
   "category": "developer-tools",
-  "tags": ["tui", "git", "dashboard", "cross-platform"],
+  "tags": [
+    "tui",
+    "git",
+    "dashboard",
+    "cross-platform"
+  ],
   "icon": "/icons/termboard.svg",
   "accent": "#7cf29c",
   "license": "MIT",
@@ -96,23 +101,6 @@
           "kind": "archive",
           "size": 9250000,
           "sha256": "2f5a8d1e4b7c0f3a6d9e2b5c8f1a4d7e0b3c6f9a2d5e8b1c4f7a0d3e6b9c2f5a"
-        }
-      ]
-    },
-    {
-      "version": "0.9.0-beta.2",
-      "date": "2026-09-30",
-      "channel": "beta",
-      "notes": "Second beta of the 0.9 line. Adds the plugin API preview.",
-      "assets": [
-        {
-          "name": "termboard_0.9.0-beta.2_linux_x64.tar.gz",
-          "url": "https://downloads.example.com/termboard/v0.9.0-beta.2/termboard_0.9.0-beta.2_linux_x64.tar.gz",
-          "os": "linux",
-          "arch": "x64",
-          "kind": "archive",
-          "size": 8320000,
-          "sha256": "4b7c0f3a6d9e2b5c8f1a4d7e0b3c6f9a2d5e8b1c4f7a0d3e6b9c2f5a8d1e4b7c"
         }
       ]
     }
